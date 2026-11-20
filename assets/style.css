@@ -3,6 +3,8 @@
   --gold: #BC9B5F;
   --bg: #F6F5F2;
   --line: rgba(17, 30, 41, .14);
+  /* 긴 설명 문단에 쓰는 조금 옅은 남색 */
+  --ink-soft: rgba(17, 30, 41, .82);
   --serif: "Noto Serif KR", serif;
   --body: "Noto Sans KR", sans-serif;
   /* 머리글(메뉴, 언어 전환)과 첫 화면 뜻풀이에 쓰는 명조 계열 글꼴 */
@@ -121,27 +123,38 @@ ul { list-style: none; }
 .hero .c { opacity: 0; }
 .hero .c.on { opacity: 1; }
 
+/* 하위 페이지는 가온처럼 900px 폭의 한 단에 제목, 설명, 항목을 위에서 아래로 둠 */
+.page-head, .page-body { max-width: 900px; }
 .page-head { padding-top: clamp(56px, 8vw, 112px); }
-.page-head h1 { font: 500 clamp(28px, 3.6vw, 40px)/1.35 var(--serif); }
+.page-head h1 { font: 500 clamp(24px, 2.6vw, 30px)/1.35 var(--serif); }
 .page-head .rule { margin-top: 24px; }
 .page-body { padding-top: clamp(40px, 5vw, 72px); padding-bottom: var(--pad); }
 .page-body > * { max-width: 760px; }
 
-.area + .area { margin-top: 56px; padding-top: 56px; border-top: 1px solid var(--line); }
-.area h3, .person h3 { font: 600 22px/1.4 var(--serif); margin-bottom: 14px; }
-.area p { text-wrap: pretty; }
-.area ul { margin-top: 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 32px; font-size: 15.5px; }
+/* 분야 사이는 선 없이 여백으로 나눔 */
+.page-body > .area { max-width: none; }
+.area + .area { margin-top: clamp(56px, 7vw, 88px); }
+/* 업무분야와 구성원은 같은 글자 크기 체계를 씀 */
+.area h2, .person h3 { font: 600 20px/1.4 var(--serif); margin-bottom: 14px; }
+.area p { font-size: 14px; line-height: 1.85; color: var(--ink-soft); text-wrap: pretty; }
+/* 목록의 작은 제목(주요 업무, 자격, 경력, 학력)은 명조 */
+.area .sub-t, .person dt { font: 600 14px/1.4 var(--serif); }
+.area .sub-t { margin-top: 24px; }
+.area .sub-t + ul { margin-top: 8px; }
+.area ul { margin-top: 18px; display: grid; gap: 4px; font-size: 13px; color: var(--ink-soft); }
 .area li { padding-left: 14px; position: relative; }
 .area li::before { content: ""; position: absolute; left: 0; top: .82em; width: 6px; height: 1px; background: var(--gold); }
 
-.person .role { font: 400 15.5px var(--body); margin-left: 8px; }
-.person > p { text-wrap: pretty; }
-.person dl { margin-top: 24px; font-size: 15.5px; }
-.person dt { font-weight: 600; margin-top: 16px; }
-.people-list .person + .person { margin-top: 64px; padding-top: 64px; border-top: 1px solid var(--line); }
+.person .role { font: 400 13.5px var(--body); margin-left: 8px; }
+.person > p { font-size: 14px; line-height: 1.85; color: var(--ink-soft); text-wrap: pretty; }
+.person > p + p { margin-top: 10px; }
+.person dl { margin-top: 18px; font-size: 13px; }
+/* 이름표와 내용 사이를 조금 띄움 */
+.person dt { margin-top: 16px; margin-bottom: 4px; }
+/* 구성원 사이는 선 없이 여백으로 나눔 */
+.people-list .person + .person { margin-top: clamp(64px, 8vw, 96px); }
 .years li { display: grid; grid-template-columns: 7.5em 1fr; gap: 16px; }
 .years span { font-variant-numeric: tabular-nums; }
-.person.pending { opacity: .55; }
 
 .contact { display: grid; grid-template-columns: 6em 1fr; gap: 14px 24px; }
 .contact dt { font-weight: 600; }
@@ -205,7 +218,11 @@ ul { list-style: none; }
   .lang { margin-left: auto; font-size: 10px; }
   .lang > span:not(.knob), .lang > a { width: 25px; padding: 4px 0; }
   .lang .knob { width: 25px; }
-  .area ul { grid-template-columns: 1fr; }
+  .area h2, .person h3 { font-size: 18px; }
+  .person .role { font-size: 13px; }
+  .area p, .person > p { font-size: 13px; }
+  .area .sub-t, .person dt { font-size: 13px; }
+  .area ul, .person dl { font-size: 12.5px; }
   .years li { grid-template-columns: 6.2em 1fr; gap: 12px; }
   .contact { grid-template-columns: 1fr; gap: 2px; }
   .contact dd { margin-bottom: 12px; }
