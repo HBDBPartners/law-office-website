@@ -178,7 +178,8 @@ ul { list-style: none; }
   /* 로고와 맞추면 문구가 사진 가장자리에 붙으므로, 사진 안쪽 여백을 기준으로 둠 */
   .hero-text { align-self: end; padding: 40px clamp(28px, 7.5vw, 48px) clamp(48px, 9svh, 96px); }
   .hero-photo img { object-position: 84% 50%; }
-  .hero .lead { font-size: 13.5px; }
+  /* 왼쪽 정렬 문단이 화면 폭을 다 채워 가운데 정렬처럼 보이지 않도록 오른쪽에 여유를 둠 */
+  .hero .lead { max-width: 20em; font-size: 13.5px; }
 }
 @media (max-width: 620px) {
   .hero { min-height: calc(100svh - 64px); }
