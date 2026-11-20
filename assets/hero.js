@@ -73,6 +73,16 @@
     text.style.height = endH + 'px';
     motto.classList.add('ready');
 
+    // 화면 너비가 바뀌면 고정한 높이를 풀어 다시 맞춤
+    // 모바일 주소창이 접히며 높이만 바뀌는 경우는 제외함
+    var width = window.innerWidth;
+    function release() {
+      if (window.innerWidth === width) return;
+      text.style.height = '';
+      window.removeEventListener('resize', release);
+    }
+    window.addEventListener('resize', release);
+
     // 1단계: 「해법」 옆 문구를 한 글자씩 표시한 뒤 「동반」을 나타내고 둘째 문구를 표시
     later(300, function () {
       type(c1, 55, function () {
@@ -114,18 +124,13 @@
         var y = u * u * u * dy + 3 * u * u * t * dy + 3 * u * t * t * dy * 0.35;
         frames.push({ transform: 'translate(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px)' });
       }
-      var anim = db.animate(frames, { duration: 1000, easing: 'cubic-bezier(.45,.05,.35,1)' });
+      db.animate(frames, { duration: 1000, easing: 'cubic-bezier(.45,.05,.35,1)' });
 
       // 4단계: 「동반」이 거의 다 올라갔을 때부터 「법률사무소」와 소개 문단이 함께 나타남
       later(800, function () {
         office.classList.add('in');
         lead.classList.add('in');
       });
-
-      // 창 크기가 바뀌면 고정한 높이를 풀어 다시 맞춤
-      anim.onfinish = function () {
-        window.addEventListener('resize', function () { text.style.height = ''; }, { once: true });
-      };
     }
   }
 })();
