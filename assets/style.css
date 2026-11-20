@@ -147,6 +147,8 @@ ul { list-style: none; }
 
 /* 분야 사이는 선 없이 여백으로 나눔 */
 .page-body > .area { max-width: none; }
+/* 홈에서 분야로 바로 이동할 때 제목이 상단 메뉴바에 가리지 않게 함 */
+.area { scroll-margin-top: 104px; }
 .area + .area { margin-top: clamp(56px, 7vw, 88px); }
 /* 업무분야와 구성원은 같은 글자 크기 체계를 씀 */
 .area h2, .person h3 { font: 600 20px/1.4 var(--serif); margin-bottom: 14px; }
@@ -203,6 +205,30 @@ ul { list-style: none; }
 .years li { display: grid; grid-template-columns: 7.5em 1fr; gap: 16px; }
 .years span { font-variant-numeric: tabular-nums; }
 
+/* 홈 첫 화면 아래에 제목 없이 업무분야 요약과 구성원 목록을 두고, 자세한 내용은 각 페이지로 연결 */
+/* 목록 아래는 여백을 줄여 목록과 바닥글이 한 화면에서 끝나게 함 */
+.home-sec { max-width: 900px; padding-top: var(--pad); padding-bottom: clamp(40px, 5vw, 64px); }
+.fields { border-top: 1px solid var(--line); }
+.field { border-bottom: 1px solid var(--line); }
+.field-link { position: relative; display: grid; grid-template-columns: 12em 1fr; align-items: baseline; gap: 4px 24px; padding: 22px 56px 22px 24px; color: inherit; text-decoration: none; }
+.field-link:hover { background: rgba(17, 30, 41, .03); }
+.field-name { font: 600 18px/1.4 var(--serif); }
+.field-desc { font-size: 13.5px; line-height: 1.7; color: var(--ink-soft); }
+.field-link:hover .member-more { right: 16px; }
+/* 폭 900px 이하는 설명이 한 줄인 분야와 두 줄인 분야가 섞이므로, 줄 높이를 설명 두 줄 기준으로 같게 하고 내용은 세로 가운데에 둠 */
+/* 119px = 위아래 여백 44 + 이름 25 + 간격 4 + 설명 두 줄 46 */
+@media (max-width: 900px) {
+  .field-link { grid-template-columns: 1fr; align-content: center; min-height: 119px; }
+}
+/* 홈에서 첫 화면 맨 위와 목록 시작 근처에서 스크롤을 멈추면 그 위치에 맞춤, 목록 안은 자유 스크롤 */
+html:has(.home-sec) { scroll-snap-type: y proximity; scroll-padding-top: 77px; }
+/* 목록은 위 여백을 건너뛰고 목록 윗선이 메뉴바 아래 40px에 오도록 맞춤 */
+.hero, .fields { scroll-snap-align: start; }
+.fields { scroll-margin-top: 40px; }
+/* 페이지 끝(바닥글 아래)도 멈추는 지점으로 두어 바닥글까지 내려갈 수 있게 함 */
+html:has(.home-sec) .foot { scroll-snap-align: end; }
+/* 구성원 목록은 제목 없이 업무분야 목록 아래에 이어 둠 */
+.home-members { margin-top: clamp(48px, 6vw, 80px); }
 /* 연락처는 위에 전화와 이메일, 아래 「오시는 길」에 지도와 주소를 사실만 나열함 */
 .contact-h { margin: clamp(56px, 7vw, 88px) 0 16px; font: 600 20px/1.4 var(--serif); }
 .contact-list { display: grid; grid-template-columns: 5em 1fr; gap: 10px 20px; align-items: baseline; font-size: 14px; color: var(--ink-soft); }
@@ -305,6 +331,13 @@ ul { list-style: none; }
   .contact-list dd { margin-bottom: 12px; }
   .contact-list dt { font-size: 13px; }
   .contact-h { font-size: 18px; }
+  /* 모바일은 목록과 바닥글이 한 화면보다 길어 맞춤을 두면 바닥글로 내려가기 어려우므로 자유 스크롤 */
+  html:has(.home-sec) { scroll-snap-type: none; }
+  /* 105px = 위아래 여백 36 + 이름 22 + 간격 4 + 설명 두 줄 43 */
+  .field-link { padding: 18px 40px 18px 16px; min-height: 105px; }
+  .field-name { font-size: 16px; }
+  .field-desc { font-size: 12.5px; }
+  .field-link:hover .member-more { right: 14px; }
   .map-links { font-size: 13px; }
   /* 좁은 화면은 같은 글자 크기도 화면 대비 크게 보이므로 바닥글을 따로 줄임 */
   .foot { padding: 18px 0 24px; font-size: 9.5px; }
