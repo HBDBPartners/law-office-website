@@ -149,6 +149,11 @@ ul { list-style: none; }
 
 .foot { border-top: 1px solid var(--line); padding: 24px 0 32px; font-size: 11px; color: rgba(17, 30, 41, .7); }
 .foot-in { display: flex; flex-wrap: wrap; gap: 2px 20px; }
+.foot a { text-decoration: none; }
+/* 밑줄은 글자보다 연한 회색으로 표시함 */
+.foot a:hover { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(17, 30, 41, .25); }
+/* 개인정보 처리방침은 진한 글자만으로 구분하고 밑줄은 표시하지 않음 */
+.foot .privacy, .foot .privacy:hover { color: var(--navy); font-family: var(--body-bold); text-decoration: none; }
 
 .burger { display: none; }
 .nav-wrap { display: contents; }
