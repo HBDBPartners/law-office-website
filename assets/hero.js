@@ -63,26 +63,28 @@
     var c1 = split(p1);
     var c2 = split(p2);
 
-    // 시작 화면과 마지막 화면 중 높은 쪽에 맞춰 문구 영역 높이를 고정해 위치가 흔들리지 않게 함
+    // 문구 영역 높이를 마지막 화면 높이로 고정해, 마지막 화면이 세로 가운데에 오고 「해법」 위치가 흔들리지 않게 함
+    // 시작 화면이 더 높으면 아래로 넘치지만, 넘치는 부분은 아직 보이지 않는 소개 문단 자리임
     var endH = text.offsetHeight;
     motto.classList.add('anim');
     office.style.display = 'none';
     ln2.insertBefore(db, p2);
-    var startH = text.offsetHeight;
-    text.style.minHeight = Math.max(endH, startH) + 'px';
+    db.classList.add('pre');
+    text.style.height = endH + 'px';
     motto.classList.add('ready');
 
-    // 1단계: 두 문구를 차례로 한 글자씩 표시
-    later(500, function () {
+    // 1단계: 「해법」 옆 문구를 한 글자씩 표시한 뒤 「동반」을 나타내고 둘째 문구를 표시
+    later(300, function () {
       type(c1, 55, function () {
-        later(250, function () {
+        db.classList.remove('pre');
+        later(400, function () {
           type(c2, 55, function () {
 
-            // 2단계: 읽을 시간을 둔 뒤 두 문구가 함께 서서히 사라짐
+            // 2단계: 읽을 시간을 둔 뒤 두 문구가 함께 서서히 사라지고, 거의 사라질 무렵 「동반」이 움직이기 시작함
             later(2600, function () {
               p1.classList.add('out');
               p2.classList.add('out');
-              later(650, moveUp);
+              later(280, moveUp);
             });
           });
         });
@@ -92,10 +94,10 @@
     // 3단계: 「동반」이 곡선을 그리며 「해법」 옆으로 올라감
     // 오른쪽으로 먼저 간 뒤 위로 휘는 곡선이라 「해법」 위를 지나가지 않음
     function moveUp() {
+      // 문구를 숨기면 같은 줄의 기준선이 바뀌어 「동반」이 먼저 움찔하므로, 숨기기 전 위치를 출발점으로 잼
+      var a = db.getBoundingClientRect();
       p1.style.display = 'none';
       p2.style.display = 'none';
-
-      var a = db.getBoundingClientRect();
       ln1.insertBefore(db, office);
       office.style.display = '';
       ln2.style.display = 'none';
@@ -122,7 +124,7 @@
 
       // 창 크기가 바뀌면 고정한 높이를 풀어 다시 맞춤
       anim.onfinish = function () {
-        window.addEventListener('resize', function () { text.style.minHeight = ''; }, { once: true });
+        window.addEventListener('resize', function () { text.style.height = ''; }, { once: true });
       };
     }
   }
