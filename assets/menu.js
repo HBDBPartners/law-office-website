@@ -1,13 +1,11 @@
 // 머리글의 메뉴 버튼과 언어 전환 동작
 (function () {
-  var top = document.querySelector('.top');
   var btn = document.querySelector('.burger');
   var nav = document.querySelector('.nav');
 
-  if (top && btn && nav) {
+  if (btn && nav) {
     var set = function (open) {
       nav.classList.toggle('open', open);
-      top.classList.toggle('menu-open', open);
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     };
 
