@@ -15,6 +15,19 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+/* 스크롤바 자리를 항상 두어 페이지마다 가로 폭을 같게 함 */
+html { overflow-y: scroll; }
+/* Chrome·Safari는 3px 스크롤바를 평소에는 숨기고, 스크롤하는 동안만 옅은 남색으로 표시 */
+::-webkit-scrollbar { width: 3px; height: 3px; }
+/* 스크롤바는 상단 메뉴바(높이 76px와 아래 선 1px)에서 12px 아래로 띄워 시작하고 화면 아래 끝과도 12px 띄움 */
+::-webkit-scrollbar-track { background: transparent; margin: 89px 0 12px; }
+::-webkit-scrollbar-thumb { background: transparent; border-radius: 2px; }
+.is-scrolling ::-webkit-scrollbar-thumb { background: rgba(17, 30, 41, .15); }
+/* Firefox는 지원하는 가장 얇은 값으로 표시하며, scrollbar-width를 쓰면 Chrome이 3px 설정을 무시하므로 분리함 */
+@supports not selector(::-webkit-scrollbar) {
+  html { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+  html.is-scrolling { scrollbar-color: rgba(17, 30, 41, .15) transparent; }
+}
 body {
   background: var(--bg);
   color: var(--navy);
@@ -227,6 +240,7 @@ ul { list-style: none; }
   /* 뜻풀이를 「해법」 「동반」(28px)의 절반 크기로 줄여 소개 문단과 크기를 맞춤 */
   .motto .ph { font-size: 14px; }
   .top-in { height: 64px; gap: 16px; }
+  ::-webkit-scrollbar-track { margin-top: 77px; }
   .brand img { height: 26px; }
   /* 글자 대신 가는 선 세 줄을 그리고, 선을 상자 오른쪽 끝에 붙여 로고의 왼쪽 여백과 맞춤 */
   /* 상자 왼쪽 빈 공간만큼 당겨 언어 전환 버튼과의 간격을 16px로 맞춤 */
