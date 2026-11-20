@@ -4,8 +4,9 @@
   --bg: #F6F5F2;
   --line: rgba(17, 30, 41, .14);
   --serif: "Noto Serif KR", serif;
-  --body: "MaruBuri", serif;
-  --body-bold: "MaruBuriSemiBold", serif;
+  --body: "Noto Sans KR", sans-serif;
+  /* 첫 화면 뜻풀이에만 쓰는 글꼴 */
+  --maru: "MaruBuri", serif;
   --pad: clamp(72px, 10vw, 152px);
 }
 
@@ -99,7 +100,7 @@ ul { list-style: none; }
 .motto .db { display: inline-block; }
 .motto .office { flex: none; font: 500 calc(var(--big) * .73)/1.35 var(--serif); letter-spacing: -.075em; margin-left: .23em; }
 /* 쉼표 없이 간격으로 「해법」 「동반」과 뜻풀이를 나누고, 줄이 넘어가면 둘째 줄을 뜻풀이 첫 글자에 맞춤 */
-.motto .ph { flex: 1 1 0; min-width: 0; margin-left: calc(var(--big) * .3); font-size: clamp(16px, 1.6vw, 20px); line-height: 1.6; text-wrap: balance; }
+.motto .ph { flex: 1 1 0; min-width: 0; font-family: var(--maru); margin-left: calc(var(--big) * .3); font-size: clamp(16px, 1.6vw, 20px); line-height: 1.6; text-wrap: balance; }
 @media (min-width: 861px) { .motto .ph { white-space: nowrap; } }
 .motto .ln2, .motto .ph { display: none; }
 .hero .lead { max-width: 40em; margin-top: clamp(28px, 3.6vw, 44px); font-size: clamp(15px, 1.2vw, 16px); text-wrap: pretty; color: rgba(255, 255, 255, .88); }
@@ -136,14 +137,14 @@ ul { list-style: none; }
 .person .role { font: 400 15.5px var(--body); margin-left: 8px; }
 .person > p { text-wrap: pretty; }
 .person dl { margin-top: 24px; font-size: 15.5px; }
-.person dt { font-family: var(--body-bold); margin-top: 16px; }
+.person dt { font-weight: 600; margin-top: 16px; }
 .people-list .person + .person { margin-top: 64px; padding-top: 64px; border-top: 1px solid var(--line); }
 .years li { display: grid; grid-template-columns: 7.5em 1fr; gap: 16px; }
 .years span { font-variant-numeric: tabular-nums; }
 .person.pending { opacity: .55; }
 
 .contact { display: grid; grid-template-columns: 6em 1fr; gap: 14px 24px; }
-.contact dt { font-family: var(--body-bold); }
+.contact dt { font-weight: 600; }
 .contact a { text-underline-offset: 5px; text-decoration-color: var(--gold); }
 .maps { display: flex; flex-wrap: wrap; gap: 8px 24px; }
 
@@ -153,7 +154,7 @@ ul { list-style: none; }
 /* 밑줄은 글자보다 연한 회색으로 표시함 */
 .foot a:hover { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(17, 30, 41, .25); }
 /* 개인정보 처리방침은 진한 글자만으로 구분하고 밑줄은 표시하지 않음 */
-.foot .privacy, .foot .privacy:hover { color: var(--navy); font-family: var(--body-bold); text-decoration: none; }
+.foot .privacy, .foot .privacy:hover { color: var(--navy); font-weight: 600; text-decoration: none; }
 
 .burger { display: none; }
 .nav-wrap { display: contents; }
