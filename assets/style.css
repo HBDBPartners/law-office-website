@@ -205,5 +205,6 @@ ul { list-style: none; }
   .contact dd { margin-bottom: 12px; }
   /* 좁은 화면은 같은 글자 크기도 화면 대비 크게 보이므로 바닥글을 따로 줄임 */
   .foot { padding: 18px 0 24px; font-size: 9.5px; }
-  .foot-in { gap: 0 12px; }
+  /* 한 줄에 둘이 붙거나 따로 놓이는 차이가 없도록 세 항목을 한 줄씩 둠 */
+  .foot-in { flex-direction: column; gap: 2px; }
 }
