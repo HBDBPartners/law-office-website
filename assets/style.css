@@ -5,7 +5,7 @@
   --line: rgba(17, 30, 41, .14);
   --serif: "Noto Serif KR", serif;
   --body: "Noto Sans KR", sans-serif;
-  /* 첫 화면 뜻풀이에만 쓰는 글꼴 */
+  /* 머리글(메뉴, 언어 전환)과 첫 화면 뜻풀이에 쓰는 명조 계열 글꼴 */
   --maru: "MaruBuri", serif;
   --pad: clamp(72px, 10vw, 152px);
 }
@@ -35,13 +35,13 @@ ul { list-style: none; }
 }
 .top-in { display: flex; align-items: center; gap: 24px; height: 76px; }
 .brand img { display: block; height: 32px; width: auto; }
-.nav { display: flex; gap: clamp(16px, 2.6vw, 32px); margin-left: auto; font-size: 14px; }
+.nav { display: flex; gap: clamp(16px, 2.6vw, 32px); margin-left: auto; font-family: var(--maru); font-size: 14px; }
 .nav a { text-decoration: none; }
 .nav a:hover, .nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: 6px; text-decoration-color: var(--gold); }
 .lang {
   position: relative; display: inline-flex; padding: 2px; margin-left: 8px;
   border: 1px solid var(--line);
-  font-size: 12px; line-height: 1;
+  font-family: var(--maru); font-size: 12px; line-height: 1;
 }
 .lang > span:not(.knob), .lang > a {
   position: relative; z-index: 1;
