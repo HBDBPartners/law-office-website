@@ -190,7 +190,9 @@ ul { list-style: none; }
 /* 사진이 없는 구성원은 같은 크기의 빈 칸을 둠 */
 .photo-empty { display: block; width: 112px; background: #e6e6e6; aspect-ratio: 4 / 5; }
 /* 구성원 상세 페이지 */
-.profile { padding-top: clamp(56px, 8vw, 112px); padding-bottom: clamp(48px, 6vw, 80px); }
+/* 상세 페이지는 페이지 제목 없이 사진이 바로 오므로, 위 여백을 「구성원 목록」 링크와 바닥글 사이 간격과 같게 둠 */
+/* 4px는 「구성원 목록」 글자 줄 아래에 붙는 여유분으로, 눈에 보이는 위아래 간격을 맞추기 위함 */
+.profile { padding-top: calc(clamp(48px, 6vw, 80px) + 4px); padding-bottom: clamp(48px, 6vw, 80px); }
 .profile-top { display: grid; grid-template-columns: 136px 1fr; gap: 28px; align-items: end; margin-bottom: 40px; }
 /* 목록과 같은 4:5 비율로 잘라 사진 비중을 줄임 */
 .profile-photo { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 15%; background: #e6e6e6; }
