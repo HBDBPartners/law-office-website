@@ -85,13 +85,14 @@ ul { list-style: none; }
   padding: var(--frame); color: #fff;
 }
 .hero-text, .hero-photo { grid-area: 1 / 1; }
-/* 왼쪽 여백에서 바깥 여백을 빼서 문구 시작 위치를 머리글 로고와 맞춤 */
 .hero-text {
   position: relative; z-index: 1; align-self: center; min-width: 0;
   padding: clamp(48px, 6vw, 96px) clamp(24px, 4vw, 64px);
   /* 넓은 화면에서는 문구가 위로 떠 보이므로 위 여백을 늘려 화면 가운데보다 조금 아래에 둠 */
   padding-top: calc(clamp(48px, 6vw, 96px) + clamp(32px, 6vh, 64px));
-  padding-left: calc(max(clamp(20px, 5vw, 48px), calc((100vw - 1120px) / 2 + 48px)) - var(--frame));
+  /* 문구 시작점은 화면 끝까지 차는 사진의 왼쪽 끝을 기준으로 두어, 넓은 화면에서도 안쪽으로 밀려 떨어져 보이지 않게 함 */
+  /* PC는 1280px 화면의 70px를 기준으로 화면 폭에 비례(5.5%)시키고, 아주 작거나 큰 화면에서만 멈춤 */
+  padding-left: clamp(56px, 5.5vw, 140px);
 }
 .hero-photo { position: relative; margin: 0; overflow: hidden; }
 /* 사진을 14초에 걸쳐 1.06배까지 확대하며 왼쪽 위로 조금 옮긴 뒤 되돌아오기를 반복함 */
@@ -109,17 +110,17 @@ ul { list-style: none; }
 @media (prefers-reduced-motion: reduce) { .hero-photo img { animation: none; } }
 /* 흰 글씨가 사진 위에서 읽히도록 사진 전체를 사무소 남색으로 62% 덮음 */
 .hero-photo::after { content: ""; position: absolute; inset: 0; background: rgba(17, 30, 41, .62); }
-.motto { --big: clamp(28px, 3.4vw, 40px); position: relative; }
+.motto { --big: clamp(32px, 3.125vw, 64px); position: relative; }
 .motto .ln { display: flex; flex-wrap: wrap; align-items: baseline; }
 /* 로고 원본의 비율에 맞춘 값: 법률사무소는 해법동반의 0.73배 크기, 자간과 두 낱말 사이 간격도 로고 측정값 */
 .motto .w { flex: none; font: 500 var(--big)/1.35 var(--serif); letter-spacing: -.036em; }
 .motto .db { display: inline-block; }
 .motto .office { flex: none; font: 500 calc(var(--big) * .73)/1.35 var(--serif); letter-spacing: -.075em; margin-left: .23em; }
 /* 쉼표 없이 간격으로 「해법」 「동반」과 뜻풀이를 나누고, 줄이 넘어가면 둘째 줄을 뜻풀이 첫 글자에 맞춤 */
-.motto .ph { flex: 1 1 0; min-width: 0; font-family: var(--maru); margin-left: calc(var(--big) * .3); font-size: clamp(16px, 1.6vw, 20px); line-height: 1.6; text-wrap: balance; }
+.motto .ph { flex: 1 1 0; min-width: 0; font-family: var(--maru); margin-left: calc(var(--big) * .3); font-size: clamp(16px, 1.5625vw, 30px); line-height: 1.6; text-wrap: balance; }
 @media (min-width: 861px) { .motto .ph { white-space: nowrap; } }
 .motto .ln2, .motto .ph { display: none; }
-.hero .lead { max-width: 40em; margin-top: clamp(28px, 3.6vw, 44px); font-size: clamp(15px, 1.2vw, 16px); text-wrap: pretty; color: rgba(255, 255, 255, .88); }
+.hero .lead { max-width: 40em; margin-top: clamp(28px, 3.44vw, 70px); font-size: clamp(14px, 1.25vw, 22px); text-wrap: pretty; color: rgba(255, 255, 255, .88); }
 
 /* 동작 시작 전 화면을 가려 마지막 화면이 잠깐 보이지 않게 함 */
 .js .motto:not(.ready) { visibility: hidden; }
@@ -273,6 +274,8 @@ html:has(.home-sec) .foot { scroll-snap-align: end; }
   .hero-text { align-self: end; padding: 40px clamp(28px, 7.5vw, 48px) clamp(48px, 9svh, 96px); }
   .hero-photo img { object-position: 84% 50%; }
   /* 왼쪽 정렬 문단이 화면 폭을 다 채워 가운데 정렬처럼 보이지 않도록 오른쪽에 여유를 둠 */
+  /* 모바일 「해법동반」 크기는 비례 규칙과 따로 28px로 고정 */
+  .motto { --big: 28px; }
   .hero .lead { max-width: 20em; font-size: 13.5px; }
 }
 @media (max-width: 620px) {
