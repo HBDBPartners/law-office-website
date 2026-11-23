@@ -225,6 +225,15 @@ html:has(.home-sec) { scroll-snap-type: y proximity; scroll-padding-top: 77px; }
 .hero, .home-sec { scroll-snap-align: start; }
 /* 페이지 끝(바닥글 아래)도 멈추는 지점으로 두어 바닥글까지 내려갈 수 있게 함 */
 html:has(.home-sec) .foot { scroll-snap-align: end; }
+/* 개인정보 처리방침: 항목 제목은 명조, 본문과 목록은 다른 페이지 본문과 같은 크기 */
+.policy h2 { margin: 40px 0 10px; font: 600 16px/1.5 var(--serif); }
+.policy p, .policy li { font-size: 14px; line-height: 1.85; color: var(--ink-soft); }
+.policy p + p { margin-top: 8px; }
+.policy ul { display: grid; gap: 4px; margin-top: 8px; }
+.policy li { position: relative; padding-left: 14px; }
+.policy li::before { content: ""; position: absolute; left: 0; top: .9em; width: 6px; height: 1px; background: var(--gold); }
+.policy a { text-underline-offset: 3px; text-decoration-color: rgba(17, 30, 41, .25); }
+.policy .contact-list { margin-top: 12px; }
 /* 연락처는 위에 전화와 이메일, 아래 「오시는 길」에 지도와 주소를 사실만 나열함 */
 .contact-h { margin: clamp(56px, 7vw, 88px) 0 16px; font: 600 20px/1.4 var(--serif); }
 .contact-list { display: grid; grid-template-columns: 5em 1fr; gap: 10px 20px; align-items: baseline; font-size: 14px; color: var(--ink-soft); }
@@ -252,7 +261,8 @@ html:has(.home-sec) .foot { scroll-snap-align: end; }
 /* 밑줄은 글자보다 연한 회색으로 표시함 */
 .foot a:hover { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(17, 30, 41, .25); }
 /* 개인정보 처리방침은 진한 글자만으로 구분하고 밑줄은 표시하지 않음 */
-.foot .privacy, .foot .privacy:hover { color: var(--navy); font-weight: 600; text-decoration: none; }
+/* 개인정보 처리방침은 굵기로만 구분하고 색은 바닥글 다른 글씨와 같게 둠 */
+.foot .privacy, .foot .privacy:hover { color: inherit; font-weight: 600; text-decoration: none; }
 
 .burger { display: none; }
 .nav-wrap { display: contents; }
@@ -329,6 +339,8 @@ html:has(.home-sec) .foot { scroll-snap-align: end; }
   .contact-list dd { margin-bottom: 12px; }
   .contact-list dt { font-size: 13px; }
   .contact-h { font-size: 18px; }
+  .policy h2 { margin-top: 32px; font-size: 15px; }
+  .policy p, .policy li { font-size: 13px; }
   /* 모바일은 목록과 바닥글이 한 화면보다 길어 맞춤을 두면 바닥글로 내려가기 어려우므로 자유 스크롤 */
   html:has(.home-sec) { scroll-snap-type: none; }
   /* 모바일은 한 칸씩 세로로 쌓고, 설명 두 줄 기준으로 칸 높이를 같게 함 */
