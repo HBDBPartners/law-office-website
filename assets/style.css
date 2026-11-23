@@ -35,6 +35,9 @@ body {
   word-break: keep-all;
   -webkit-font-smoothing: antialiased;
 }
+/* 내용이 화면보다 짧은 페이지는 본문이 남은 높이를 채워 바닥글을 화면 맨 아래에 둠 */
+body { min-height: 100svh; display: flex; flex-direction: column; }
+main { flex: 1 0 auto; }
 a { color: inherit; }
 .nw { white-space: nowrap; }
 ul { list-style: none; }
