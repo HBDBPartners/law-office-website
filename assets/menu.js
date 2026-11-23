@@ -10,7 +10,18 @@
     };
 
     btn.addEventListener('click', function () {
+      nav.classList.add('anim');
       set(!nav.classList.contains('open'));
+    });
+
+    // 창 폭이 모바일 기준(620px)을 넘나들면 메뉴를 닫고 움직임을 끔
+    var narrow = window.matchMedia('(max-width: 620px)');
+    var wasNarrow = narrow.matches;
+    window.addEventListener('resize', function () {
+      if (narrow.matches === wasNarrow) return;
+      wasNarrow = narrow.matches;
+      nav.classList.remove('anim');
+      set(false);
     });
 
     // Esc 키로 닫기
