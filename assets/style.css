@@ -11,17 +11,17 @@
   /* 머리글(메뉴, 언어 전환)과 첫 화면 뜻풀이에 쓰는 명조 계열 글꼴 */
   --maru: "MaruBuri", serif;
   --pad: clamp(72px, 10vw, 152px);
+  /* 상단 메뉴바 높이(아래 선 1px 제외) */
+  --head-h: 76px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-/* 스크롤바 자리를 항상 두어 페이지마다 가로 폭을 같게 함 */
-html { overflow-y: scroll; }
-/* 휴대폰에서 메뉴 버튼과 링크를 누를 때 회색 사각형이 깜빡이지 않게 함 */
-html { -webkit-tap-highlight-color: transparent; }
+/* 스크롤바 자리를 항상 두어 페이지마다 가로 폭을 같게 하고, 휴대폰에서 누를 때 회색 사각형이 깜빡이지 않게 함 */
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; overflow-y: scroll; -webkit-tap-highlight-color: transparent; }
 /* Chrome·Safari는 3px 스크롤바를 평소에는 숨기고, 스크롤하는 동안만 옅은 남색으로 표시 */
 ::-webkit-scrollbar { width: 3px; height: 3px; }
 /* 스크롤바는 상단 메뉴바(높이 76px와 아래 선 1px)에서 12px 아래로 띄워 시작하고 화면 아래 끝과도 12px 띄움 */
+/* 스크롤바 부분에는 변수가 적용되지 않는 브라우저가 있어 숫자로 둠 */
 ::-webkit-scrollbar-track { background: transparent; margin: 89px 0 12px; }
 ::-webkit-scrollbar-thumb { background: transparent; border-radius: 2px; }
 .is-scrolling ::-webkit-scrollbar-thumb { background: rgba(17, 30, 41, .15); }
@@ -30,15 +30,15 @@ html { -webkit-tap-highlight-color: transparent; }
   html { scrollbar-width: thin; scrollbar-color: transparent transparent; }
   html.is-scrolling { scrollbar-color: rgba(17, 30, 41, .15) transparent; }
 }
+/* 내용이 화면보다 짧은 페이지는 본문이 남은 높이를 채워 바닥글을 화면 맨 아래에 둠 */
 body {
+  min-height: 100svh; display: flex; flex-direction: column;
   background: var(--bg);
   color: var(--navy);
   font: 400 17px/1.75 var(--body);
   word-break: keep-all;
   -webkit-font-smoothing: antialiased;
 }
-/* 내용이 화면보다 짧은 페이지는 본문이 남은 높이를 채워 바닥글을 화면 맨 아래에 둠 */
-body { min-height: 100svh; display: flex; flex-direction: column; }
 main { flex: 1 0 auto; }
 a { color: inherit; }
 .nw { white-space: nowrap; }
@@ -46,15 +46,12 @@ ul { list-style: none; }
 
 .wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 48px); }
 
-/* 금색은 선과 표식에만 사용함 */
-.rule { display: block; width: 40px; height: 2px; background: var(--gold); }
-
 .top {
   position: sticky; top: 0; z-index: 10;
   background: var(--bg);
   border-bottom: 1px solid var(--line);
 }
-.top-in { display: flex; align-items: center; gap: 24px; height: 76px; }
+.top-in { display: flex; align-items: center; gap: 24px; height: var(--head-h); }
 .brand img { display: block; height: 32px; width: auto; }
 .nav { display: flex; gap: clamp(16px, 2.6vw, 32px); margin-left: auto; font-family: var(--maru); font-size: 14px; }
 .nav a { text-decoration: none; }
@@ -86,18 +83,15 @@ ul { list-style: none; }
 /* 사진 둘레에 바탕색 여백을 두고, 사진 위에 남색 반투명 막을 씌운 뒤 흰 글씨를 둠 */
 .hero {
   --frame: clamp(12px, 1.8vw, 24px);
-  display: grid; grid-template-columns: 1fr; min-height: calc(100svh - 76px);
+  display: grid; grid-template-columns: 1fr; min-height: calc(100svh - var(--head-h));
   padding: var(--frame); color: #fff;
 }
 .hero-text, .hero-photo { grid-area: 1 / 1; }
 .hero-text {
   position: relative; z-index: 1; align-self: center; min-width: 0;
-  padding: clamp(48px, 6vw, 96px) clamp(24px, 4vw, 64px);
-  /* 넓은 화면에서는 문구가 위로 떠 보이므로 위 여백을 늘려 화면 가운데보다 조금 아래에 둠 */
-  padding-top: calc(clamp(48px, 6vw, 96px) + clamp(32px, 6vh, 64px));
-  /* 문구 시작점은 화면 끝까지 차는 사진의 왼쪽 끝을 기준으로 두어, 넓은 화면에서도 안쪽으로 밀려 떨어져 보이지 않게 함 */
-  /* PC는 1280px 화면의 70px를 기준으로 화면 폭에 비례(5.5%)시키고, 아주 작거나 큰 화면에서만 멈춤 */
-  padding-left: clamp(56px, 5.5vw, 140px);
+  /* 위: 넓은 화면에서는 문구가 위로 떠 보이므로 늘려서 화면 가운데보다 조금 아래에 둠 */
+  /* 왼쪽: 화면 끝까지 차는 사진의 왼쪽 끝을 기준으로, 1280px 화면의 70px를 화면 폭에 비례(5.5%)시키고 아주 작거나 큰 화면에서만 멈춤 */
+  padding: calc(clamp(48px, 6vw, 96px) + clamp(32px, 6vh, 64px)) clamp(24px, 4vw, 64px) clamp(48px, 6vw, 96px) clamp(56px, 5.5vw, 140px);
 }
 .hero-photo { position: relative; margin: 0; overflow: hidden; }
 /* 사진을 14초에 걸쳐 1.06배까지 확대하며 왼쪽 위로 조금 옮긴 뒤 되돌아오기를 반복함 */
@@ -147,27 +141,27 @@ ul { list-style: none; }
 .page-head, .page-body { max-width: 900px; }
 .page-head { padding-top: clamp(56px, 8vw, 112px); }
 .page-head h1 { font: 500 clamp(24px, 2.6vw, 30px)/1.35 var(--serif); }
-.page-head .rule { margin-top: 24px; }
 .page-body { padding-top: clamp(40px, 5vw, 72px); padding-bottom: var(--pad); }
 .page-body > * { max-width: 760px; }
 
 /* 분야 사이는 선 없이 여백으로 나눔 */
 .page-body > .area { max-width: none; }
 /* 홈에서 분야로 바로 이동할 때 제목이 상단 메뉴바에 가리지 않게 함 */
-.area { scroll-margin-top: 104px; }
+.area { scroll-margin-top: calc(var(--head-h) + 28px); }
 .area + .area { margin-top: clamp(56px, 7vw, 88px); }
 /* 업무분야와 구성원은 같은 글자 크기 체계를 씀 */
-.area h2, .person h3 { font: 600 20px/1.4 var(--serif); margin-bottom: 14px; }
+.area h2 { font: 600 20px/1.4 var(--serif); margin-bottom: 14px; }
 .area p { font-size: 14px; line-height: 1.85; color: var(--ink-soft); text-wrap: pretty; }
 /* 목록의 작은 제목(주요 업무, 자격, 경력, 학력)은 명조 */
 .area .sub-t, .person dt { font: 600 14px/1.4 var(--serif); }
 .area .sub-t { margin-top: 24px; }
 .area .sub-t + ul { margin-top: 8px; }
 .area ul { margin-top: 18px; display: grid; gap: 4px; font-size: 13px; color: var(--ink-soft); }
-.area li { padding-left: 14px; position: relative; }
-.area li::before { content: ""; position: absolute; left: 0; top: .82em; width: 6px; height: 1px; background: var(--gold); }
+/* 목록 머리표는 금색 짧은 가로선 */
+.area li, .policy li { position: relative; padding-left: 14px; }
+.area li::before, .policy li::before { content: ""; position: absolute; left: 0; top: .82em; width: 6px; height: 1px; background: var(--gold); }
+.policy li::before { top: .9em; }
 
-.person .role { font: 400 13.5px var(--body); margin-left: 8px; }
 .person > p { font-size: 14px; line-height: 1.85; color: var(--ink-soft); text-wrap: pretty; }
 .person > p + p { margin-top: 10px; }
 .person dl { margin-top: 18px; font-size: 13px; }
@@ -181,27 +175,24 @@ ul { list-style: none; }
 .member-link { display: contents; color: inherit; text-decoration: none; }
 /* 줄 전체를 상세 페이지 링크의 클릭 범위로 덮고, 이메일만 그 위에 둠 */
 .member-link::after { content: ""; position: absolute; inset: 0; }
-/* 줄 높이를 낮추려고 사진을 4:5로 잘라 얼굴과 어깨만 보이게 함 */
-.member-photo { display: block; grid-row: 1 / span 2; width: 112px; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 15%; background: #e6e6e6; }
+/* 목록과 상세 페이지 모두 사진을 4:5로 잘라 얼굴과 어깨만 보이게 하고, 사진이 없으면 같은 크기의 회색 칸을 둠 */
+.member-photo, .profile-photo { display: block; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 15%; background: #e6e6e6; }
+.member-photo { grid-row: 1 / span 2; width: 112px; }
 /* 글 덩어리를 줄 가운데에 두어 위쪽 여백과 아래쪽 여백을 같게 함 */
 .member-id { align-self: end; }
 .member-name { display: block; font: 600 18px/1.4 var(--serif); }
 .member-role { display: block; margin-top: 2px; font-size: 12.5px; color: var(--ink-soft); }
 .member-mail { position: relative; z-index: 1; grid-column: 2; align-self: start; justify-self: start; margin-top: 4px; font-size: 12px; color: var(--ink-soft); text-decoration: none; }
-.member-mail:hover, .profile-mail:hover { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(17, 30, 41, .25); }
 /* 상세 페이지 연결 표시: 가로로 눌러 벌어진 가는 꺾쇠 */
 .member-more { position: absolute; right: 20px; top: 50%; width: 10px; height: 10px; border-top: 1px solid rgba(17, 30, 41, .3); border-right: 1px solid rgba(17, 30, 41, .3); transform: translateY(-50%) scaleX(.6) rotate(45deg); transition: right .2s; }
 .member:hover .member-more { right: 16px; }
 .member:hover { background: rgba(17, 30, 41, .03); }
-/* 사진이 없는 구성원은 같은 크기의 빈 칸을 둠 */
-.photo-empty { display: block; width: 112px; background: #e6e6e6; aspect-ratio: 4 / 5; }
 /* 구성원 상세 페이지 */
 /* 상세 페이지는 페이지 제목 없이 사진이 바로 오므로, 위 여백을 「구성원 목록」 링크와 바닥글 사이 간격과 같게 둠 */
 /* 4px는 「구성원 목록」 글자 줄 아래에 붙는 여유분으로, 눈에 보이는 위아래 간격을 맞추기 위함 */
 .profile { padding-top: calc(clamp(48px, 6vw, 80px) + 4px); padding-bottom: clamp(48px, 6vw, 80px); }
 .profile-top { display: grid; grid-template-columns: 136px 1fr; gap: 28px; align-items: end; margin-bottom: 40px; }
-/* 목록과 같은 4:5 비율로 잘라 사진 비중을 줄임 */
-.profile-photo { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 15%; background: #e6e6e6; }
+.profile-photo { width: 100%; }
 .profile-name { font: 600 22px/1.4 var(--serif); }
 .profile-name .role { margin-left: 8px; font: 400 14px var(--body); }
 .profile-mail { display: inline-block; margin-top: 6px; font-size: 12.5px; color: var(--ink-soft); text-decoration: none; }
@@ -214,8 +205,8 @@ ul { list-style: none; }
 .years span { font-variant-numeric: tabular-nums; }
 
 /* 홈 첫 화면 아래에 제목 없이 업무분야 요약을 두고, 자세한 내용은 업무분야 페이지로 연결 */
-/* 분야 구획이 메뉴바(77px)와 바닥글(77px)을 뺀 남은 화면을 채우고, 분야 칸은 그 가운데에 둠 */
-.home-sec { max-width: 900px; min-height: calc(100svh - 77px - 77px); display: flex; flex-direction: column; justify-content: center; padding-top: 40px; padding-bottom: 40px; }
+/* 분야 구획이 메뉴바와 바닥글(77px)을 뺀 남은 화면을 채우고, 분야 칸은 그 가운데에 둠 */
+.home-sec { max-width: 900px; min-height: calc(100svh - var(--head-h) - 1px - 77px); display: flex; flex-direction: column; justify-content: center; padding-top: 40px; padding-bottom: 40px; }
 /* 분야 네 개를 선으로만 나눈 2×2 칸으로 둠, 배경·사진·둥근 모서리 없음 */
 .fields { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); }
 .field { display: flex; border-bottom: 1px solid var(--line); }
@@ -226,7 +217,7 @@ ul { list-style: none; }
 .field-desc { display: block; margin-top: 10px; font-size: 13.5px; line-height: 1.75; color: var(--ink-soft); }
 .field-link:hover .member-more { right: 16px; }
 /* 홈에서 첫 화면 맨 위와 목록 시작 근처에서 스크롤을 멈추면 그 위치에 맞춤, 목록 안은 자유 스크롤 */
-html:has(.home-sec) { scroll-snap-type: y proximity; scroll-padding-top: 77px; }
+html:has(.home-sec) { scroll-snap-type: y proximity; scroll-padding-top: calc(var(--head-h) + 1px); }
 /* 분야 구획 시작에 맞추면 분야 칸과 바닥글이 한 화면에 들어옴 */
 .hero, .home-sec { scroll-snap-align: start; }
 /* 페이지 끝(바닥글 아래)도 멈추는 지점으로 두어 바닥글까지 내려갈 수 있게 함 */
@@ -236,8 +227,6 @@ html:has(.home-sec) .foot { scroll-snap-align: end; }
 .policy p, .policy li { font-size: 14px; line-height: 1.85; color: var(--ink-soft); }
 .policy p + p { margin-top: 8px; }
 .policy ul { display: grid; gap: 4px; margin-top: 8px; }
-.policy li { position: relative; padding-left: 14px; }
-.policy li::before { content: ""; position: absolute; left: 0; top: .9em; width: 6px; height: 1px; background: var(--gold); }
 .policy a { text-underline-offset: 3px; text-decoration-color: rgba(17, 30, 41, .25); }
 .policy .contact-list { margin-top: 12px; }
 /* 연락처는 위에 전화와 이메일, 아래 「오시는 길」에 지도와 주소를 사실만 나열함 */
@@ -245,7 +234,6 @@ html:has(.home-sec) .foot { scroll-snap-align: end; }
 .contact-list { display: grid; grid-template-columns: 5em 1fr; gap: 10px 20px; align-items: baseline; font-size: 14px; color: var(--ink-soft); }
 .contact-list dt { font: 600 14px/1.4 var(--serif); color: var(--navy); }
 .contact-list a { text-decoration: none; }
-.contact-list a:hover { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(17, 30, 41, .25); }
 /* 네이버 지도와 로고 위치 표시 */
 /* 지도 안의 확대·축소 버튼이 스크롤할 때 상단 메뉴바 위로 올라오지 않도록 지도를 따로 쌓음 */
 .office-map { position: relative; z-index: 0; isolation: isolate; width: 100%; height: clamp(200px, 32vw, 360px); background: #e9e9e9; }
@@ -253,20 +241,18 @@ html:has(.home-sec) .foot { scroll-snap-align: end; }
 /* 원과 끝이 한 덩어리로 그림자를 갖도록 box-shadow 대신 drop-shadow를 씀 */
 .map-pin { position: relative; width: 32px; height: 32px; border-radius: 50%; background: #fff; filter: drop-shadow(0 1px 1.5px rgba(17, 30, 41, .3)) drop-shadow(0 3px 5px rgba(17, 30, 41, .18)); }
 .map-pin::after { content: ""; position: absolute; left: 50%; top: 29px; transform: translateX(-50%); border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 8px solid #fff; }
-/* 로고 파일에서 왼쪽 표식 부분만 보이게 함 */
-.map-pin-logo { position: absolute; left: 50%; top: 50%; width: 11px; height: 20px; transform: translate(-50%, -50%); background: url(/assets/logo-ko.svg) no-repeat 0 0 / auto 20px; }
+/* 정사각 표식 아이콘을 원 가운데에 둠, 25px는 표식 높이가 20px가 되는 크기 */
+.map-pin-logo { position: absolute; left: 50%; top: 50%; width: 25px; height: 25px; transform: translate(-50%, -50%); background: url(/assets/icon.svg) no-repeat center / contain; }
 /* 지도 바로 아래 오른쪽에 바깥 지도 앱으로 여는 링크를 두고, 새 서비스로 이동함을 오른쪽 위 화살표로 표시 */
 .map-links { display: flex; justify-content: flex-end; gap: 24px; margin: 12px 0 28px; font-size: 14px; }
 .map-links a { font-family: var(--serif); font-weight: 500; color: var(--navy); text-decoration: none; }
-.map-links a:hover { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(17, 30, 41, .25); }
 .map-links svg { margin-left: 4px; vertical-align: 1px; }
 
 .foot { border-top: 1px solid var(--line); padding: 24px 0 32px; font-size: 11px; color: rgba(17, 30, 41, .7); }
 .foot-in { display: flex; flex-wrap: wrap; gap: 2px 20px; }
 .foot a { text-decoration: none; }
-/* 밑줄은 글자보다 연한 회색으로 표시함 */
-.foot a:hover { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(17, 30, 41, .25); }
-/* 개인정보 처리방침은 진한 글자만으로 구분하고 밑줄은 표시하지 않음 */
+/* 이메일, 연락처, 지도, 바닥글 링크는 마우스를 올리면 글자보다 연한 회색 밑줄을 표시함 */
+.member-mail:hover, .profile-mail:hover, .contact-list a:hover, .map-links a:hover, .foot a:hover { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(17, 30, 41, .25); }
 /* 개인정보 처리방침은 굵기로만 구분하고 색은 바닥글 다른 글씨와 같게 둠 */
 .foot .privacy, .foot .privacy:hover { color: inherit; font-weight: 600; text-decoration: none; }
 
@@ -278,16 +264,16 @@ html:has(.home-sec) .foot { scroll-snap-align: end; }
   /* 로고와 맞추면 문구가 사진 가장자리에 붙으므로, 사진 안쪽 여백을 기준으로 둠 */
   .hero-text { align-self: end; padding: 40px clamp(28px, 7.5vw, 48px) clamp(48px, 9svh, 96px); }
   .hero-photo img { object-position: 84% 50%; }
-  /* 왼쪽 정렬 문단이 화면 폭을 다 채워 가운데 정렬처럼 보이지 않도록 오른쪽에 여유를 둠 */
   /* 모바일 「해법동반」 크기는 비례 규칙과 따로 28px로 고정 */
   .motto { --big: 28px; }
+  /* 왼쪽 정렬 문단이 화면 폭을 다 채워 가운데 정렬처럼 보이지 않도록 오른쪽에 여유를 둠 */
   .hero .lead { max-width: 20em; font-size: 13.5px; }
 }
 @media (max-width: 620px) {
-  .hero { min-height: calc(100svh - 64px); }
+  :root { --head-h: 64px; }
   /* 뜻풀이를 「해법」 「동반」(28px)의 절반 크기로 줄여 소개 문단과 크기를 맞춤 */
   .motto .ph { font-size: 14px; }
-  .top-in { height: 64px; gap: 16px; }
+  .top-in { gap: 16px; }
   ::-webkit-scrollbar-track { margin-top: 77px; }
   .brand img { height: 26px; }
   /* 글자 대신 가는 선 세 줄을 그리고, 선을 상자 오른쪽 끝에 붙여 로고의 왼쪽 여백과 맞춤 */
@@ -324,13 +310,12 @@ html:has(.home-sec) .foot { scroll-snap-align: end; }
   .lang { margin-left: auto; font-size: 10px; }
   .lang > span:not(.knob), .lang > a { width: 25px; padding: 4px 0; }
   .lang .knob { width: 25px; }
-  .area h2, .person h3 { font-size: 18px; }
-  .person .role { font-size: 13px; }
+  .area h2 { font-size: 18px; }
   .area p, .person > p { font-size: 13px; }
   .area .sub-t, .person dt { font-size: 13px; }
   /* 모바일은 같은 구조에서 사진과 간격만 줄임 */
   .member { grid-template-columns: 88px 1fr; column-gap: 16px; }
-  .member-photo, .photo-empty { width: 88px; }
+  .member-photo { width: 88px; }
   .member-name { font-size: 16px; }
   .member-role { font-size: 11.5px; }
   .member-mail { margin-top: 2px; font-size: 11px; word-break: break-all; }
@@ -351,17 +336,16 @@ html:has(.home-sec) .foot { scroll-snap-align: end; }
   .policy p, .policy li { font-size: 13px; }
   /* 모바일은 목록과 바닥글이 한 화면보다 길어 맞춤을 두면 바닥글로 내려가기 어려우므로 자유 스크롤 */
   html:has(.home-sec) { scroll-snap-type: none; }
-  /* 모바일은 한 칸씩 세로로 쌓고, 설명 두 줄 기준으로 칸 높이를 같게 함 */
   /* 모바일은 화면 높이를 채우지 않고, 사진 아래와 바닥글 선 위를 같은 120px로 둠 */
   /* 위는 첫 화면 사진 테두리 여백 12px가 더해지므로 108px로 둠 */
   .home-sec { min-height: 0; padding-top: 108px; padding-bottom: 120px; }
+  /* 모바일은 한 칸씩 세로로 쌓고, 설명 두 줄 기준으로 칸 높이를 같게 함 */
   .fields { grid-template-columns: 1fr; }
   .field:nth-child(odd) { border-right: 0; }
   /* 105px = 위아래 여백 36 + 이름 22 + 간격 4 + 설명 두 줄 43 */
   .field-link { display: grid; align-content: center; padding: 18px 40px 18px 16px; min-height: 105px; }
-  .field-desc { margin-top: 4px; }
   .field-name { font-size: 16px; }
-  .field-desc { font-size: 12.5px; }
+  .field-desc { margin-top: 4px; font-size: 12.5px; }
   .field-link:hover .member-more { right: 14px; }
   .map-links { font-size: 13px; }
   /* 좁은 화면은 같은 글자 크기도 화면 대비 크게 보이므로 바닥글을 따로 줄임 */

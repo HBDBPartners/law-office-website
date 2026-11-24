@@ -5,7 +5,7 @@
   var el = document.getElementById('office-map');
   if (!el || !window.naver || !naver.maps) return;
 
-  // 테헤란로 138 성홍타워 좌표(카카오 장소 좌표를 위경도로 변환한 값)
+  // 테헤란로 138 성홍타워 좌표
   var office = new naver.maps.LatLng(37.49964, 127.03430);
 
   var map = new naver.maps.Map(el, {

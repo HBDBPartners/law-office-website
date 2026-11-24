@@ -2,9 +2,9 @@
 (function () {
   var root = document.documentElement;
   var timer;
-  addEventListener("scroll", function () {
-    root.classList.add("is-scrolling");
+  addEventListener('scroll', function () {
+    root.classList.add('is-scrolling');
     clearTimeout(timer);
-    timer = setTimeout(function () { root.classList.remove("is-scrolling"); }, 800);
+    timer = setTimeout(function () { root.classList.remove('is-scrolling'); }, 800);
   }, { passive: true });
 })();
