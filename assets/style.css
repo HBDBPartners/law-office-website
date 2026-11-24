@@ -307,13 +307,17 @@ html:has(.home-sec) { scroll-snap-type: y proximity; scroll-padding-top: calc(va
 .hero, .home-sec { scroll-snap-align: start; }
 /* 페이지 끝(바닥글 아래)도 멈추는 지점으로 두어 바닥글까지 내려갈 수 있게 함 */
 html:has(.home-sec) .foot { scroll-snap-align: end; }
-/* 개인정보 처리방침: 항목 제목은 명조, 본문과 목록은 다른 페이지 본문과 같은 크기 */
-.policy h2 { margin: 40px 0 10px; font: 600 16px/1.5 var(--serif); }
-.policy p, .policy li { font-size: calc(14px * var(--sans)); line-height: 1.85; color: var(--ink-soft); }
-.policy p + p { margin-top: 8px; }
-.policy ul { display: grid; gap: 4px; margin-top: 8px; }
+/* 개인정보 처리방침: 안내 문서라 다른 하위 페이지보다 제목·본문·간격을 한 단계 작게 둠 */
+.policy-head { padding-top: clamp(40px, 5vw, 72px); }
+.policy-head h1 { font-size: 24px; }
+.page-body.policy { padding-top: clamp(24px, 3vw, 36px); }
+.policy h2 { margin: 28px 0 6px; font: 600 14.5px/1.5 var(--serif); }
+.policy p, .policy li { font-size: calc(13px * var(--sans)); line-height: 1.7; color: var(--ink-soft); }
+.policy p + p { margin-top: 6px; }
+.policy ul { display: grid; gap: 2px; margin-top: 6px; }
 .policy a { text-underline-offset: 3px; text-decoration-color: var(--underline); }
-.policy .contact-list { margin-top: 12px; }
+.policy .contact-list { margin-top: 8px; gap: 4px 20px; font-size: calc(13px * var(--sans)); }
+.policy .contact-list dt { font-size: 13px; }
 /* 연락처는 위에 전화와 이메일, 아래 「오시는 길」에 지도와 주소를 사실만 나열함 */
 /* 항목명과 「오시는 길」은 굵게 대신 중간 굵기(500)로 두어 본문과 구분만 함 */
 .contact-h { margin: clamp(44px, 5.5vw, 70px) 0 16px; font: 500 20px/1.4 var(--serif); }
@@ -427,8 +431,12 @@ html:lang(en) .foot { font-size: 11px; }
   .contact-list dd { margin-bottom: 8px; }
   .contact-list dt { font-size: 13px; }
   .contact-h { font-size: 18px; }
-  .policy h2 { margin-top: 32px; font-size: 15px; }
-  .policy p, .policy li { font-size: calc(13px * var(--sans)); }
+  .policy-head h1 { font-size: 20px; }
+  .policy h2 { margin-top: 24px; font-size: 13.5px; }
+  .policy p, .policy li, .policy .contact-list { font-size: calc(12.5px * var(--sans)); }
+  .policy .contact-list { gap: 0; }
+  .policy .contact-list dt { font-size: 12.5px; }
+  .policy .contact-list dd { margin-bottom: 4px; }
   /* 모바일은 목록과 바닥글이 한 화면보다 길어 맞춤을 두면 바닥글로 내려가기 어려우므로 자유 스크롤 */
   html:has(.home-sec) { scroll-snap-type: none; }
   /* 모바일은 화면 높이를 채우지 않고, 사진 아래와 바닥글 선 위를 같은 120px로 둠 */
