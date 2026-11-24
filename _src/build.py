@@ -8,6 +8,7 @@ _src/pages의 페이지 본문과 _src/partials의 머리글·바닥글을 합�
 """
 
 import hashlib
+import html
 import pathlib
 import re
 import string
@@ -17,12 +18,14 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "_src"
 SITE = "https://hbdbpartners.com"
 
-# 캐시 버전에 반영하는 파일: 이 파일들의 내용이 바뀌면 ?v 값이 바뀌어 브라우저가 새 파일을 받음
-# CSS가 불러오는 그림(icon.svg, arrow-external.svg)도 포함함
-VERSIONED = [
-    "style.css", "menu.js", "scrollbar.js", "hero.js", "contact-map.js",
-    "logo-ko.svg", "logo-en.svg", "icon.svg", "arrow-external.svg",
-]
+# 캐시 버전에 반영하는 파일: HTML이 ?v를 붙여 부르는 파일이며, 내용이 바뀌면 ?v 값이 바뀌어 브라우저가 새 파일을 받음
+# CSS가 부르는 그림(icon.svg, arrow-external.svg)과 사진에는 ?v가 붙지 않으므로, 바꿀 때는 파일 이름을 바꿈
+VERSIONED = ["style.css", "menu.js", "scrollbar.js", "hero.js", "contact-map.js", "logo-ko.svg", "logo-en.svg"]
+
+# 페이지 설정에 쓸 수 있는 이름과 구역 이름: 오타를 오류로 알리기 위한 목록
+KEYS = {"lang", "title", "description", "path", "alt", "other", "nav", "hero", "layout", "main_class", "noindex"}
+SECTIONS = {"head", "main", "after"}
+NAVS = {"practice", "people", "contact"}
 
 # 명조(Noto Serif KR)만 불러오는 글꼴 연결: 영문 페이지와 머리글·바닥글 없는 404에 씀
 FONTS_SERIF_ONLY = "family=Noto+Serif+KR:wght@500;600"
@@ -77,12 +80,43 @@ def read_page(path):
     parts = {}
     name = None
     for line in body.splitlines(keepends=True):
-        if line.startswith("<!-- @") and line.rstrip().endswith("-->"):
+        if line.startswith("<!-- @"):
             name = line.strip()[6:-4].strip()
             parts[name] = ""
         elif name:
             parts[name] += line
+        elif line.strip():
+            fail(path, "첫 구역 표시(<!-- @main --> 등) 앞에 내용이 있음")
+    check_page(path, meta, parts)
+    # 제목·설명은 원본에 글자 그대로 쓰고, HTML 속성에 넣을 수 있게 여기서 바꿈(& → &amp;, " → &quot;)
+    for key in ("title", "description"):
+        if key in meta:
+            meta[key] = html.escape(meta[key], quote=True)
     return meta, parts
+
+
+def fail(path, message):
+    sys.exit(f"{path.relative_to(SRC)}: {message}")
+
+
+def check_page(path, meta, parts):
+    """설정·구역 이름의 오타와 빠진 필수 항목을 알리고 조립을 멈춤."""
+    for key in meta.keys() - KEYS:
+        fail(path, f"알 수 없는 설정 이름 「{key}」")
+    for name in parts.keys() - SECTIONS:
+        fail(path, f"알 수 없는 구역 이름 「{name}」(쓸 수 있는 이름: head, main, after)")
+    required = ["lang", "title"] if meta.get("layout") == "bare" else ["lang", "title", "description", "path"]
+    for key in required:
+        if key not in meta:
+            fail(path, f"필수 설정 「{key}」 항목이 없음")
+    if "main" not in parts:
+        fail(path, "본문 구역 <!-- @main -->이 없음")
+    if meta["lang"] not in LANG:
+        fail(path, f"lang은 ko 또는 en이어야 함: {meta['lang']}")
+    if meta.get("nav", "practice") not in NAVS:
+        fail(path, f"nav는 practice, people, contact 중 하나여야 함: {meta['nav']}")
+    if "--" in meta.get("noindex", ""):
+        fail(path, "noindex 설명에는 주석을 끊는 「--」를 쓸 수 없음")
 
 
 def share_tags(meta, info, url):
@@ -147,7 +181,7 @@ def head(meta, parts, v, source):
         out.append(f'<script src="/assets/scrollbar.js?v={v}" defer></script>\n')
     if meta.get("hero") == "yes":
         out.append(with_version(HERO_SCRIPTS, v))
-    out.append(parts.get("head", ""))
+    out.append(with_version(parts.get("head", ""), v))
     out.append("</head>\n")
     return "".join(out)
 
@@ -170,7 +204,7 @@ def build_page(src, v):
         other = meta.get("other") or meta.get("alt") or ("/en/" if lang == "ko" else "/")
         out.append(partial(f"header-{lang}.html", v=v, other=other, **current))
         out.append("\n")
-    out += [main_open, "\n", parts["main"], "</main>\n\n"]
+    out += [main_open, "\n", with_version(parts["main"], v), "</main>\n\n"]
     if not bare:
         out.append(partial(f"footer-{lang}.html"))
         out.append("\n")

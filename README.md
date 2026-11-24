@@ -6,7 +6,7 @@ Source for the HBDB Partners (해법동반 법률사무소) website at https://h
 
 The HTML files in the repository root are generated. Do not edit them directly.
 
-- `_src/pages/` holds the body of each page, with its settings (title, description, language pair, menu) at the top.
+- `_src/pages/` holds the body of each page, with its settings (title, description, language pair, menu) at the top. Write the title and description as plain text (for example `M&A`); the build escapes them. The build stops with the file name if a setting name or a section name (`head`, `main`, `after`) is misspelled or a required setting is missing.
 - `_src/partials/` holds the shared header and footer for Korean and English.
 - `_src/build.py` combines them into the HTML files in the repository root.
 
@@ -41,3 +41,4 @@ Published with GitHub Pages. Pushing to `main` updates the site. The custom doma
 
 Every page links `style.css`, the scripts and the logo SVGs with a `?v=` query so that browsers fetch new files after a deployment.
 `_src/build.py` sets it to a hash of those files, so it changes only when one of them changes. Run the build after editing anything in `assets/`.
+Images loaded from the CSS (`icon.svg`, `arrow-external.svg`) and photos have no `?v=` query. When replacing one of them, give the new file a new name.
