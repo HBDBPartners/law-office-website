@@ -247,9 +247,14 @@ html:lang(en) .motto .ph { font-size: clamp(18px, 1.8vw, 34px); line-height: 1.3
 .profile-name { font: 600 22px/1.4 var(--serif); }
 .profile-name .role { margin-left: 8px; font: 400 calc(14px * var(--sans)) var(--body); }
 .profile-mail { display: inline-block; margin-top: 6px; font-size: calc(12.5px * var(--sans)); color: var(--ink-soft); text-decoration: none; }
-.back { display: inline-block; margin-top: clamp(72px, 9vw, 104px); font: 500 14px/1.4 var(--serif); text-decoration: none; }
+/* 한글은 같은 크기에서 영문보다 커 보이므로 13px, 영문은 14px로 두어 두 언어의 꺾쇠와 글자 비율을 같게 맞춤 */
+.back { display: inline-block; margin-top: clamp(72px, 9vw, 104px); font: 500 13px/1.4 var(--serif); text-decoration: none; }
+html:lang(en) .back { font-size: 14px; }
 /* 목록의 꺾쇠와 같은 선 모양을 왼쪽으로 뒤집어 사용 */
-.back span { display: inline-block; width: 9px; height: 9px; margin-right: 4px; border-bottom: 1px solid currentColor; border-left: 1px solid currentColor; transform: scaleX(.6) rotate(45deg); vertical-align: 1px; position: relative; left: 0; transition: left .2s; }
+/* 꺾쇠는 상자의 왼쪽 절반만 선으로 보이므로, 보이는 끝에서 글자까지 약 8px이 되도록 오른쪽 여백을 둠 */
+.back span { display: inline-block; width: 8px; height: 8px; margin-right: 4px; border-bottom: 1px solid currentColor; border-left: 1px solid currentColor; transform: scaleX(.6) rotate(45deg); vertical-align: 1px; position: relative; left: 0; transition: left .2s; }
+/* 꺾쇠 세로 가운데를 한글은 받침까지 포함한 글자 몸통, 영문은 소문자 높이의 가운데에 맞춤 */
+html:lang(en) .back span { vertical-align: .5px; }
 /* 목록 꺾쇠와 같은 동작으로, 마우스를 올리면 가는 방향으로 4px 이동 */
 .back:hover span { left: -4px; }
 .years li { display: grid; grid-template-columns: 7.5em 1fr; gap: 16px; }
