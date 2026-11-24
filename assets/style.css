@@ -84,6 +84,43 @@ ul { list-style: none; }
 @font-face { font-family: "KimjungchulMyungjo"; src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Light.woff2") format("woff2"); font-weight: 300; font-display: swap; }
 @font-face { font-family: "KimjungchulMyungjo"; src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
 @font-face { font-family: "KimjungchulMyungjo"; src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+/* 영문 페이지: 제목·본문·메뉴는 Times New Roman, 본문 속 한글은 Noto Serif KR로 표시 */
+/* 첫 화면 「해법동반」 「HBDB Partners」는 로고 글꼴(--logo)을 그대로 씀 */
+html:lang(en) { --serif: "Times New Roman", Times, "Noto Serif KR", serif; --body: "Times New Roman", Times, "Noto Serif KR", serif; --maru: "Times New Roman", Times, "Noto Serif KR", serif; }
+html:lang(en) body { word-break: normal; }
+/* 언어 전환 KO·EN 글자는 한글 페이지와 같은 글꼴 */
+html:lang(en) .lang { font-family: "MaruBuri", serif; }
+/* 첫 화면 소개 문단 칸을 한글 문단의 줄 수(PC 3줄, 860px 이하 6줄) 높이로 고정해 「해법동반」 위치를 한글 페이지와 같게 둠 */
+/* 영문 문단이 더 길면 넘치는 줄은 칸 아래 여백에 표시됨 */
+html:lang(en) .hero .lead { height: 3lh; }
+@media (max-width: 860px) { html:lang(en) .hero .lead { height: 6lh; } }
+/* 영문 첫 화면: 「해법동반」 자리에 「HBDB Partners」를 겹쳐 두고, 한 글자씩 바뀌며 나타나게 함 */
+/* 폭과 줄 높이를 0으로 두어 「해법동반」의 배치와 줄 높이를 한글 페이지와 같게 유지함 */
+/* 「해법동반」과 같은 크기로, 전체 폭이 한글 「해법동반 법률사무소」와 같음 */
+/* 자간 0과 낱말 사이 간격 0.26em은 영문 로고 측정값 */
+html:lang(en) .motto .mark { flex: none; width: 0; white-space: nowrap; font: 300 var(--big)/0 var(--logo); letter-spacing: 0; }
+html:lang(en) .motto .mark .pt { margin-left: .26em; }
+html:lang(en) .motto .office { display: none; }
+/* 동작 없이 표시할 때는 처음부터 「HBDB Partners」만 보임 */
+html:lang(en) .motto:not(.anim) .w { visibility: hidden; }
+/* 동작 중에는 글자 단위로 나타나므로 묶음 전체는 hero.js가 바꿀 때까지 숨김 */
+html:lang(en) .motto.anim .mark { opacity: 0; }
+html:lang(en) .motto.anim .mark.in { opacity: 1; }
+/* 한글 한 글자가 흐려지며 사라지는 동안 같은 자리의 로마자가 흐린 상태에서 선명해짐 */
+html:lang(en) .motto .w .s, html:lang(en) .motto .mark .l { display: inline-block; transition: opacity .45s, filter .45s; }
+html:lang(en) .motto .w .s.off, html:lang(en) .motto.anim .mark .l { opacity: 0; filter: blur(4px); }
+html:lang(en) .motto.anim .mark .l.on { opacity: 1; filter: none; }
+html:lang(en) .motto.anim .mark .pt { display: inline-block; opacity: 0; transition: opacity .6s ease-in-out; }
+html:lang(en) .motto.anim .mark .pt.in { opacity: 1; }
+/* 소개 문단도 「Partners」와 같은 속도로 나타남 */
+html.js:lang(en) .hero .lead { transition: opacity .6s ease-in-out; }
+/* Times New Roman은 같은 크기에서 한글 뜻풀이보다 작아 보이므로 1.15배로 키움 */
+html:lang(en) .motto .ph { font-size: clamp(18px, 1.8vw, 34px); line-height: 1.35; }
+@media (max-width: 620px) { html:lang(en) .motto .ph { font-size: 16px; } }
+/* 영문은 EN이 오른쪽에 있으므로 남색 칸이 오른쪽에서 시작해 KO를 누르면 왼쪽으로 이동 */
+.lang-en .knob { transform: translateX(100%); }
+.lang-en.move .knob { transform: none; }
+.en-pending { font-size: 15px; color: var(--ink-soft); }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* 첫 화면은 머리글 아래 화면 높이를 모두 채움 */

@@ -52,6 +52,62 @@
 
   function later(ms, fn) { setTimeout(fn, ms); }
 
+  // 한 글자씩 지정한 이름의 span으로 감쌈
+  function wrap(el, cls) {
+    var t = el.textContent;
+    var out = [];
+    el.textContent = '';
+    for (var i = 0; i < t.length; i++) {
+      var s = document.createElement('span');
+      s.className = cls;
+      s.textContent = t[i];
+      el.appendChild(s);
+      out.push(s);
+    }
+    return out;
+  }
+
+  // 영문 페이지 4단계: 해→H, 법→B, 동→D, 반→B로 한 글자씩 바뀐 뒤 네 글자가 왼쪽으로 모여 「HBDB」가 되고 「Partners」와 소개 문단이 나타남
+  function toMark(hb, db, mark) {
+    var syl = wrap(hb, 's').concat(wrap(db, 's'));
+    var pt = mark.querySelector('.pt');
+    mark.removeChild(pt);
+    var letters = wrap(mark, 'l');
+    mark.appendChild(pt);
+    mark.classList.add('in');
+
+    // 각 로마자를 대응하는 한글 글자의 가운데에 둠
+    var shifts = letters.map(function (l, i) {
+      var a = syl[i].getBoundingClientRect();
+      var b = l.getBoundingClientRect();
+      var dx = (a.left + a.width / 2) - (b.left + b.width / 2);
+      l.style.transform = 'translateX(' + dx + 'px)';
+      return dx;
+    });
+
+    // 0.13초 간격으로 한글이 흐려지며 사라지고 같은 자리에 로마자가 나타남
+    letters.forEach(function (l, i) {
+      later(i * 130, function () {
+        syl[i].classList.add('off');
+        l.classList.add('on');
+      });
+    });
+
+    // 네 글자가 모두 바뀐 뒤 왼쪽으로 모이고, 모이는 도중에 「Partners」와 소개 문단이 나타남
+    later(3 * 130 + 450, function () {
+      letters.forEach(function (l, i) {
+        l.animate(
+          [{ transform: 'translateX(' + shifts[i] + 'px)' }, { transform: 'translateX(0)' }],
+          { duration: 600, easing: 'cubic-bezier(.45,.05,.35,1)', fill: 'forwards' }
+        );
+      });
+      later(350, function () {
+        pt.classList.add('in');
+        lead.classList.add('in');
+      });
+    });
+  }
+
   // 웹 글꼴을 받은 뒤 시작해 높이를 정확히 잼
   var fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
   fontsReady.then(start);
@@ -125,6 +181,13 @@
         frames.push({ transform: 'translate(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px)' });
       }
       db.animate(frames, { duration: 1000, easing: 'cubic-bezier(.45,.05,.35,1)' });
+
+      // 영문 페이지는 「동반」이 다 올라간 뒤 「HBDB Partners」로 바뀜
+      var mark = motto.querySelector('.mark');
+      if (mark) {
+        later(1100, function () { toMark(motto.querySelector('.hb'), db, mark); });
+        return;
+      }
 
       // 4단계: 「동반」이 거의 다 올라갔을 때부터 「법률사무소」와 소개 문단이 함께 나타남
       later(800, function () {
