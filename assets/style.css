@@ -292,8 +292,12 @@ html:has(.home-sec) .foot { scroll-snap-align: end; }
 .map-links a { font-family: var(--serif); font-weight: 500; color: var(--navy); text-decoration: none; }
 .map-links svg { margin-left: 4px; vertical-align: 1px; }
 
-.foot { border-top: 1px solid var(--line); padding: 24px 0 32px; font-size: 11px; color: rgba(17, 30, 41, .7); }
+/* 한글 바닥글은 영문(Times New Roman 11px)과 글자 높이가 비슷해 보이도록 10px로 둠 */
+.foot { border-top: 1px solid var(--line); padding: 24px 0 32px; font-size: 10px; color: rgba(17, 30, 41, .7); }
+html:lang(en) .foot { font-size: 11px; }
 .foot-in { display: flex; flex-wrap: wrap; gap: 2px 20px; }
+/* 저작권 표시는 사무소 정보와 성격이 달라 항상 맨 아래 별도 줄에 둠 */
+.foot .copy { flex-basis: 100%; }
 .foot a { text-decoration: none; }
 /* 이메일, 연락처, 지도, 바닥글 링크는 마우스를 올리면 글자보다 연한 회색 밑줄을 표시함 */
 .member-mail:hover, .profile-mail:hover, .contact-list a:hover, .map-links a:hover, .foot a:hover { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(17, 30, 41, .25); }
@@ -393,7 +397,8 @@ html:has(.home-sec) .foot { scroll-snap-align: end; }
   .field-link:hover .member-more { right: 14px; }
   .map-links { font-size: 13px; }
   /* 좁은 화면은 같은 글자 크기도 화면 대비 크게 보이므로 바닥글을 따로 줄임 */
-  .foot { padding: 18px 0 24px; font-size: 9.5px; }
+  .foot { padding: 18px 0 24px; font-size: 9px; }
+  html:lang(en) .foot { font-size: 9.5px; }
   /* 한 줄에 둘이 붙거나 따로 놓이는 차이가 없도록 세 항목을 한 줄씩 둠 */
   .foot-in { flex-direction: column; gap: 2px; }
 }
