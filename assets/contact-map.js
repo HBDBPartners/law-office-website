@@ -22,7 +22,7 @@
   new naver.maps.Marker({
     position: office,
     map: map,
-    title: '해법동반 법률사무소',
+    title: document.documentElement.lang === 'en' ? 'HBDB Partners' : '해법동반 법률사무소',
     icon: {
       content: '<div class="map-pin" aria-hidden="true"><span class="map-pin-logo"></span></div>',
       size: new naver.maps.Size(32, 37),

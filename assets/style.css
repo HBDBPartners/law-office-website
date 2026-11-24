@@ -277,6 +277,12 @@ html:has(.home-sec) .foot { scroll-snap-align: end; }
 .contact-h { margin: clamp(56px, 7vw, 88px) 0 16px; font: 600 20px/1.4 var(--serif); }
 .contact-list { display: grid; grid-template-columns: 5em 1fr; gap: 10px 20px; align-items: baseline; font-size: 14px; color: var(--ink-soft); }
 .contact-list dt { font: 600 14px/1.4 var(--serif); color: var(--navy); }
+/* Times New Roman은 굵기가 보통과 굵게 둘뿐이라 600이 굵게로 표시되어 무거우므로, 보통 굵기에 획을 0.15px 더해 중간 굵기로 둠 */
+html:lang(en) .contact-list dt, html:lang(en) .contact-h { font-weight: 400; -webkit-text-stroke: .15px currentColor; }
+/* Times New Roman은 글자 키가 작아 같은 간격이 넓어 보이므로 영문은 줄간격과 항목 간격을 줄임 */
+html:lang(en) .contact-list { row-gap: 6px; line-height: 1.5; }
+html:lang(en) .contact-h { margin-top: clamp(44px, 5.5vw, 70px); }
+@media (max-width: 620px) { html:lang(en) .contact-list { row-gap: 0; } html:lang(en) .contact-list dd { margin-bottom: 8px; } }
 .contact-list a { text-decoration: none; }
 /* 네이버 지도와 로고 위치 표시 */
 /* 지도 안의 확대·축소 버튼이 스크롤할 때 상단 메뉴바 위로 올라오지 않도록 지도를 따로 쌓음 */
