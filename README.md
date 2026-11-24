@@ -24,6 +24,8 @@ python3 _src/build.py --check
 
 The build also lists HTML files that have no source page, such as a page whose source was deleted.
 
+`sitemap.xml` is generated too. It lists every page that has a `path` setting and no `noindex` setting. A page's `lastmod` becomes the build date only when its generated HTML changes; otherwise the previous date is kept.
+
 ## Local development
 
 From the repository folder, run the following and open `http://localhost:8000`.

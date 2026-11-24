@@ -1,12 +1,13 @@
 """사이트 페이지 조립 스크립트.
 
-_src/pages의 페이지 본문과 _src/partials의 머리글·바닥글을 합쳐 저장소 루트에 HTML을 만듦.
+_src/pages의 페이지 본문과 _src/partials의 머리글·바닥글을 합쳐 저장소 루트에 HTML과 sitemap.xml을 만듦.
 저장소 루트의 HTML은 조립 결과라서 직접 고치지 않고, 원본을 고친 뒤 다시 조립함.
 
 실행: python3 _src/build.py
 확인만: python3 _src/build.py --check  (조립 결과와 현재 HTML이 다르면 파일 이름을 알리고 실패로 끝남)
 """
 
+import datetime
 import hashlib
 import html
 import pathlib
@@ -26,6 +27,9 @@ VERSIONED = ["style.css", "menu.js", "scrollbar.js", "hero.js", "contact-map.js"
 KEYS = {"lang", "title", "description", "path", "alt", "other", "nav", "hero", "layout", "main_class", "noindex"}
 SECTIONS = {"head", "main", "after"}
 NAVS = {"practice", "people", "contact"}
+
+# sitemap 순서: 한글 뒤 영문, 각 언어 안에서는 첫 화면·업무분야·구성원·연락처·개인정보 처리방침 순
+SITEMAP_SECTIONS = ["", "practice", "people", "contact", "privacy"]
 
 # 명조(Noto Serif KR)만 불러오는 글꼴 연결: 영문 페이지와 머리글·바닥글 없는 404에 씀
 FONTS_SERIF_ONLY = "family=Noto+Serif+KR:wght@500;600"
@@ -192,6 +196,7 @@ def partial(name, **values):
 
 
 def build_page(src, v):
+    """조립한 HTML과 페이지 설정을 돌려줌."""
     meta, parts = read_page(src)
     lang = meta["lang"]
     bare = meta.get("layout") == "bare"
@@ -211,7 +216,7 @@ def build_page(src, v):
     if "after" in parts:
         out.append(with_version(parts["after"], v))
     out.append("</body>\n</html>\n")
-    return "".join(out)
+    return "".join(out), meta
 
 
 def stray_html(outputs):
@@ -224,23 +229,59 @@ def stray_html(outputs):
     return sorted(found - outputs)
 
 
+def sitemap_order(path):
+    """sitemap에서 페이지가 놓일 순서: 언어, 메뉴 순서, 목록 페이지 먼저, 주소 순."""
+    parts = path.strip("/").split("/")
+    lang = 1 if parts[0] == "en" else 0
+    if lang:
+        parts = parts[1:]
+    section = parts[0] if parts and parts[0] else ""
+    rank = SITEMAP_SECTIONS.index(section) if section in SITEMAP_SECTIONS else len(SITEMAP_SECTIONS)
+    return (lang, rank, len(parts), path)
+
+
+def sitemap(entries):
+    """검색엔진에 알릴 주소 목록. 마지막 수정일은 이번에 조립 결과가 바뀐 페이지만 오늘 날짜로 바꾸고 나머지는 이전 값을 유지함."""
+    dest = ROOT / "sitemap.xml"
+    old = dest.read_text(encoding="utf-8") if dest.exists() else ""
+    previous = dict(re.findall(r"<loc>([^<]+)</loc><lastmod>([^<]+)</lastmod>", old))
+    today = datetime.date.today().isoformat()
+    lines = ['<?xml version="1.0" encoding="UTF-8"?>\n', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n']
+    for path, changed in sorted(entries, key=lambda e: sitemap_order(e[0])):
+        url = SITE + path
+        lastmod = today if changed or url not in previous else previous[url]
+        lines.append(f"  <url><loc>{url}</loc><lastmod>{lastmod}</lastmod></url>\n")
+    lines.append("</urlset>\n")
+    return "".join(lines), old
+
+
 def main():
     check = "--check" in sys.argv[1:]
     v = version()
     pages = sorted((SRC / "pages").rglob("*.html"))
     outputs = set()
     changed = []
+    entries = []
     for src in pages:
         rel = src.relative_to(SRC / "pages")
         outputs.add(rel)
         dest = ROOT / rel
-        html = build_page(src, v)
-        if dest.exists() and dest.read_text(encoding="utf-8") == html:
+        page, meta = build_page(src, v)
+        differs = not (dest.exists() and dest.read_text(encoding="utf-8") == page)
+        # 검색에 넣는 페이지만 sitemap에 올림(404·검색 제외 페이지 빠짐)
+        if "path" in meta and "noindex" not in meta:
+            entries.append((meta["path"], differs))
+        if not differs:
             continue
         changed.append(rel)
         if not check:
             dest.parent.mkdir(parents=True, exist_ok=True)
-            dest.write_text(html, encoding="utf-8")
+            dest.write_text(page, encoding="utf-8")
+    xml, old_xml = sitemap(entries)
+    if xml != old_xml:
+        changed.append(pathlib.Path("sitemap.xml"))
+        if not check:
+            (ROOT / "sitemap.xml").write_text(xml, encoding="utf-8")
     for rel in stray_html(outputs):
         print(f"원본 없는 HTML: {rel} (원본을 지웠다면 이 파일도 지울 것)")
     if check:
