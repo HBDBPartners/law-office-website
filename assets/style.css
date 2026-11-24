@@ -8,6 +8,8 @@
   --ink-soft: rgba(17, 30, 41, .82);
   --serif: "Noto Serif KR", serif;
   --body: "Noto Sans KR", sans-serif;
+  /* 로고 글자와 같은 글꼴로, 첫 화면 「해법동반」 「법률사무소」에 씀 */
+  --logo: "KimjungchulMyungjo", "Noto Serif KR", serif;
   /* 머리글(메뉴, 언어 전환)과 첫 화면 뜻풀이에 쓰는 명조 계열 글꼴 */
   --maru: "MaruBuri", serif;
   --pad: clamp(72px, 10vw, 152px);
@@ -77,6 +79,11 @@ ul { list-style: none; }
 .lang.move .on { color: var(--navy); }
 .lang.move a { color: #fff; }
 
+/* 로고 글자와 같은 김정철 명조 */
+/* 굵기 300·400·700 세 종류만 제공되어 500은 400, 600은 700으로 표시 */
+@font-face { font-family: "KimjungchulMyungjo"; src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Light.woff2") format("woff2"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "KimjungchulMyungjo"; src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "KimjungchulMyungjo"; src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* 첫 화면은 머리글 아래 화면 높이를 모두 채움 */
@@ -111,10 +118,10 @@ ul { list-style: none; }
 .hero-photo::after { content: ""; position: absolute; inset: 0; background: rgba(17, 30, 41, .62); }
 .motto { --big: clamp(32px, 3.125vw, 64px); position: relative; }
 .motto .ln { display: flex; flex-wrap: wrap; align-items: baseline; }
-/* 로고 원본의 비율에 맞춘 값: 법률사무소는 해법동반의 0.73배 크기, 자간과 두 낱말 사이 간격도 로고 측정값 */
-.motto .w { flex: none; font: 500 var(--big)/1.35 var(--serif); letter-spacing: -.036em; }
+/* 국문 로고 원본 측정값: 법률사무소는 해법동반의 0.75배 크기, 두 낱말 사이 간격은 해법동반 크기의 0.21배 */
+.motto .w { flex: none; font: 400 var(--big)/1.35 var(--logo); letter-spacing: -.035em; }
 .motto .db { display: inline-block; }
-.motto .office { flex: none; font: 500 calc(var(--big) * .73)/1.35 var(--serif); letter-spacing: -.075em; margin-left: .23em; }
+.motto .office { flex: none; font: 400 calc(var(--big) * .75)/1.35 var(--logo); letter-spacing: -.031em; margin-left: calc(var(--big) * .21); }
 /* 쉼표 없이 간격으로 「해법」 「동반」과 뜻풀이를 나누고, 줄이 넘어가면 둘째 줄을 뜻풀이 첫 글자에 맞춤 */
 .motto .ph { flex: 1 1 0; min-width: 0; font-family: var(--maru); margin-left: calc(var(--big) * .3); font-size: clamp(16px, 1.5625vw, 30px); line-height: 1.6; text-wrap: balance; }
 @media (min-width: 861px) { .motto .ph { white-space: nowrap; } }
@@ -125,8 +132,8 @@ ul { list-style: none; }
 .js .motto:not(.ready) { visibility: hidden; }
 .js .hero .lead { opacity: 0; transition: opacity .3s; }
 .js .hero .lead.in { opacity: 1; }
-/* 「해법」 「동반」을 세로로 놓을 때 두 줄 사이를 좁힘 */
-.motto.anim .ln2 { display: flex; margin-top: calc(var(--big) * -.28); }
+/* 「해법」 「동반」을 세로로 놓을 때 두 줄 사이를 좁혀 기준선 간격을 글자 크기와 같게 둠 */
+.motto.anim .ln2 { display: flex; margin-top: calc(var(--big) * -.35); }
 .motto.anim .ph { display: block; transition: opacity .3s; }
 .motto.anim .ph.out { opacity: 0; }
 /* 「동반」은 둘째 문구 직전에 나타나 「해법」 아래에 혼자 놓이는 시간을 없앰 */
