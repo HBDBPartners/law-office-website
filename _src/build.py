@@ -17,6 +17,9 @@ SITE = "https://hbdbpartners.com"
 # 캐시 버전에 반영하는 파일: 이 파일들의 내용이 바뀌면 ?v 값이 바뀌어 브라우저가 새 파일을 받음
 VERSIONED = ["style.css", "menu.js", "scrollbar.js", "hero.js", "contact-map.js", "logo-ko.svg", "logo-en.svg"]
 
+# 명조(Noto Serif KR)만 불러오는 글꼴 연결: 영문 페이지와 머리글·바닥글 없는 404에 씀
+FONTS_SERIF_ONLY = "family=Noto+Serif+KR:wght@500;600"
+
 LANG = {
     "ko": {
         "site_name": "해법동반 법률사무소",
@@ -29,7 +32,7 @@ LANG = {
         "site_name": "HBDB Partners",
         "locale": "en_US",
         "image_alt": "The lounge and meeting rooms at HBDB Partners",
-        "fonts": "family=Noto+Serif+KR:wght@500;600",
+        "fonts": FONTS_SERIF_ONLY,
         "og_note": "",
     },
 }
@@ -70,6 +73,24 @@ def read_page(path):
     return meta, parts
 
 
+def share_tags(meta, info, url):
+    """카카오톡·메신저 등에 링크를 보낼 때 뜨는 제목·설명·사진(og 태그)."""
+    return "".join([
+        info["og_note"],
+        '<meta property="og:type" content="website">\n',
+        f'<meta property="og:site_name" content="{info["site_name"]}">\n',
+        f'<meta property="og:locale" content="{info["locale"]}">\n',
+        f'<meta property="og:title" content="{meta["title"]}">\n',
+        f'<meta property="og:description" content="{meta["description"]}">\n',
+        f'<meta property="og:url" content="{url}">\n',
+        f'<meta property="og:image" content="{SITE}/assets/og-image.jpg">\n',
+        '<meta property="og:image:width" content="1200">\n',
+        '<meta property="og:image:height" content="630">\n',
+        f'<meta property="og:image:alt" content="{info["image_alt"]}">\n',
+        '<meta name="twitter:card" content="summary_large_image">\n',
+    ])
+
+
 def head(meta, parts, v, source):
     lang = meta["lang"]
     info = LANG[lang]
@@ -99,21 +120,8 @@ def head(meta, parts, v, source):
             out.append(f'<link rel="alternate" hreflang="ko" href="{SITE}{ko}">\n')
             out.append(f'<link rel="alternate" hreflang="en" href="{SITE}{en}">\n')
             out.append(f'<link rel="alternate" hreflang="x-default" href="{SITE}{ko}">\n')
-        out.append(info["og_note"])
-        out += [
-            '<meta property="og:type" content="website">\n',
-            f'<meta property="og:site_name" content="{info["site_name"]}">\n',
-            f'<meta property="og:locale" content="{info["locale"]}">\n',
-            f'<meta property="og:title" content="{meta["title"]}">\n',
-            f'<meta property="og:description" content="{meta["description"]}">\n',
-            f'<meta property="og:url" content="{url}">\n',
-            f'<meta property="og:image" content="{SITE}/assets/og-image.jpg">\n',
-            '<meta property="og:image:width" content="1200">\n',
-            '<meta property="og:image:height" content="630">\n',
-            f'<meta property="og:image:alt" content="{info["image_alt"]}">\n',
-            '<meta name="twitter:card" content="summary_large_image">\n',
-        ]
-    fonts = LANG["en"]["fonts"] if bare else info["fonts"]
+        out.append(share_tags(meta, info, url))
+    fonts = FONTS_SERIF_ONLY if bare else info["fonts"]
     out += [
         '<link rel="preconnect" href="https://fonts.googleapis.com">\n',
         '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n',
