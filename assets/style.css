@@ -286,7 +286,8 @@ html:has(.home-sec) .foot { scroll-snap-align: end; }
 .contact-list { display: grid; grid-template-columns: 5em 1fr; gap: 6px 20px; align-items: baseline; font-size: calc(14px * var(--sans)); line-height: 1.5; color: var(--ink-soft); }
 .contact-list dt { font: 500 14px/1.4 var(--serif); color: var(--navy); }
 /* Times New Roman은 굵기가 보통과 굵게 둘뿐이라 500이 보통으로 표시되므로, 보통 굵기에 획을 0.15px 더해 중간 굵기로 둠 */
-html:lang(en) .contact-list dt, html:lang(en) .contact-h { font-weight: 400; -webkit-text-stroke: .15px currentColor; }
+html:lang(en) .contact-list dt, html:lang(en) .contact-h, html:lang(en) .person dt, html:lang(en) .area .sub-t, html:lang(en) .member-name, html:lang(en) .profile-name { font-weight: 400; -webkit-text-stroke: .15px currentColor; }
+html:lang(en) .profile-name .role { -webkit-text-stroke: 0; }
 .contact-list a { text-decoration: none; }
 /* 네이버 지도와 로고 위치 표시 */
 /* 지도 안의 확대·축소 버튼이 스크롤할 때 상단 메뉴바 위로 올라오지 않도록 지도를 따로 쌓음 */
