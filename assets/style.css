@@ -150,9 +150,10 @@ html:lang(en) .lang { font-family: "Latin Times", "MaruBuri", serif; }
 .motto { --big: clamp(32px, 3.125vw, 64px); position: relative; }
 .motto .ln { display: flex; flex-wrap: wrap; align-items: baseline; }
 /* 국문 로고 원본 측정값: 법률사무소는 해법동반의 0.75배 크기, 두 낱말 사이 간격은 해법동반 크기의 0.21배 */
-.motto .w { flex: none; font: 400 var(--big)/1.35 var(--logo); letter-spacing: -.035em; }
+/* 로고 글자는 400이지만 사진 위 흰 글자는 번져 굵게 보이므로 300(Light)으로 두어 밝은 바탕의 로고와 비슷한 굵기로 보이게 함 */
+.motto .w { flex: none; font: 300 var(--big)/1.35 var(--logo); letter-spacing: -.035em; }
 .motto .db { display: inline-block; }
-.motto .office { flex: none; font: 400 calc(var(--big) * .75)/1.35 var(--logo); letter-spacing: -.031em; margin-left: calc(var(--big) * .21); }
+.motto .office { flex: none; font: 300 calc(var(--big) * .75)/1.35 var(--logo); letter-spacing: -.031em; margin-left: calc(var(--big) * .21); }
 /* 쉼표 없이 간격으로 「해법」 「동반」과 뜻풀이를 나누고, 줄이 넘어가면 둘째 줄을 뜻풀이 첫 글자에 맞춤 */
 .motto .ph { flex: 1 1 0; min-width: 0; font-family: var(--maru); margin-left: calc(var(--big) * .3); font-size: clamp(16px, 1.5625vw, 30px); line-height: 1.6; text-wrap: balance; }
 @media (min-width: 861px) { .motto .ph { white-space: nowrap; } }
