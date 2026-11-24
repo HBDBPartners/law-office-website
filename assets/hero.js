@@ -103,13 +103,8 @@
   var fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
   fontsReady.then(start);
 
-  function start() {
-    // 대기 시간이 길어 이미 마지막 화면이 표시된 경우 동작하지 않음
-    if (!document.documentElement.classList.contains('js')) return;
-
-    var c1 = split(p1);
-    var c2 = split(p2);
-
+  // 시작 화면 배치로 바꾸고, 동작 중 문구 영역의 높이와 세로 위치를 고정함
+  function fixLayout() {
     // 문구 영역 높이를 마지막 화면 높이로 고정해, 마지막 화면이 세로 가운데에 오고 「해법」 위치가 흔들리지 않게 함
     // 시작 화면이 더 높으면 아래로 넘치지만, 넘치는 부분은 아직 보이지 않는 소개 문단 자리임
     var endH = text.offsetHeight;
@@ -141,6 +136,15 @@
       window.removeEventListener('resize', release);
     }
     window.addEventListener('resize', release);
+  }
+
+  function start() {
+    // 대기 시간이 길어 이미 마지막 화면이 표시된 경우 동작하지 않음
+    if (!document.documentElement.classList.contains('js')) return;
+
+    var c1 = split(p1);
+    var c2 = split(p2);
+    fixLayout();
 
     // 1단계: 「해법」 옆 문구를 한 글자씩 표시한 뒤 「동반」을 나타내고 둘째 문구를 표시
     later(300, function () {
