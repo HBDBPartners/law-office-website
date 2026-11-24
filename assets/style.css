@@ -100,7 +100,8 @@ html:lang(en) .lang { font-family: "Latin Times", "MaruBuri", serif; }
 /* 첫 화면 소개 문단 칸을 한글 문단의 줄 수(PC 3줄, 860px 이하 6줄) 높이로 고정해 「해법동반」 위치를 한글 페이지와 같게 둠 */
 /* 영문 문단이 더 길면 넘치는 줄은 칸 아래 여백에 표시됨 */
 html:lang(en) .hero .lead { height: 3lh; }
-@media (max-width: 860px) { html:lang(en) .hero .lead { height: 6lh; } }
+/* 860px 이하에서 영문 문단이 한글보다 두 줄 길어 사진 아래쪽에 붙으므로 줄간격을 줄이고, 칸 높이는 한글 6줄(13.5px × 1.75)에 고정함 */
+@media (max-width: 860px) { html:lang(en) .hero .lead { height: calc(13.5px * 1.75 * 6); line-height: 1.55; } }
 /* 영문 첫 화면: 「해법동반」 자리에 「HBDB Partners」를 겹쳐 두고, 한 글자씩 바뀌며 나타나게 함 */
 /* 폭과 줄 높이를 0으로 두어 「해법동반」의 배치와 줄 높이를 한글 페이지와 같게 유지함 */
 /* 「해법동반」과 같은 크기로, 전체 폭이 한글 「해법동반 법률사무소」와 같음 */
