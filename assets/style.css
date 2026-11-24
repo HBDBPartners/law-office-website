@@ -143,7 +143,7 @@ ul { list-style: none; }
 .hero .c { opacity: 0; }
 .hero .c.on { opacity: 1; }
 
-/* 하위 페이지는 가온처럼 900px 폭의 한 단에 제목, 설명, 항목을 위에서 아래로 둠 */
+/* 하위 페이지는 900px 폭의 한 단에 제목, 설명, 항목을 위에서 아래로 둠 */
 .page-head, .page-body { max-width: 900px; }
 .page-head { padding-top: clamp(56px, 8vw, 112px); }
 .page-head h1 { font: 500 clamp(24px, 2.6vw, 30px)/1.35 var(--serif); }
@@ -173,7 +173,7 @@ ul { list-style: none; }
 .person dl { margin-top: 18px; font-size: 13px; }
 /* 이름표와 내용 사이를 조금 띄움 */
 .person dt { margin-top: 16px; margin-bottom: 4px; }
-/* 구성원 목록은 가온처럼 한 사람씩 가로 줄로 두고, 줄 전체를 누르면 상세 페이지로 이동 */
+/* 구성원 목록은 한 사람씩 가로 줄로 두고, 줄 전체를 누르면 상세 페이지로 이동 */
 /* 줄 안 배치: 왼쪽 사진, 오른쪽에 이름과 직함과 이메일을 세로로 모으고, 끝에 꺾쇠 표시 */
 .page-body > .members { max-width: none; }
 .members { border-top: 1px solid var(--line); }
