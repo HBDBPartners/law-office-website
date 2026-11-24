@@ -31,7 +31,11 @@ html:lang(ko) { --sans: .93; }
 /* 한글 페이지의 영문·숫자·기호만 영문 페이지와 같은 Times New Roman으로 표시하고 한글은 각 글꼴 그대로 둠 */
 /* Times 굵게는 한글 제목 옆에서 지나치게 진하므로 모든 굵기에 보통 굵기를 씀 */
 /* Times 대문자는 한글보다 낮아 보이므로 8% 키워 대문자 높이를 Noto 글꼴의 영문 대문자 높이에 맞춤 */
-@font-face { font-family: "Latin Times"; src: local("Times New Roman"), local("TimesNewRomanPSMT"); font-weight: 100 900; size-adjust: 108%; unicode-range: U+0020-007E, U+00A0-00FF, U+2013-2014, U+2018-201D; }
+/* Safari는 굵기 범위 선언을 무시하고, 글꼴 이름(Times New Roman)으로 찾으면 요청 굵기에 맞춰 굵은 파일을 고르므로 보통 굵기 파일 이름(PostScript 이름)만 지정해 굵기마다 따로 선언함 */
+@font-face { font-family: "Latin Times"; src: local("TimesNewRomanPSMT"); font-weight: 400; size-adjust: 108%; unicode-range: U+0020-007E, U+00A0-00FF, U+2013-2014, U+2018-201D; }
+@font-face { font-family: "Latin Times"; src: local("TimesNewRomanPSMT"); font-weight: 500; size-adjust: 108%; unicode-range: U+0020-007E, U+00A0-00FF, U+2013-2014, U+2018-201D; }
+@font-face { font-family: "Latin Times"; src: local("TimesNewRomanPSMT"); font-weight: 600; size-adjust: 108%; unicode-range: U+0020-007E, U+00A0-00FF, U+2013-2014, U+2018-201D; }
+@font-face { font-family: "Latin Times"; src: local("TimesNewRomanPSMT"); font-weight: 700; size-adjust: 108%; unicode-range: U+0020-007E, U+00A0-00FF, U+2013-2014, U+2018-201D; }
 /* 로고 글자와 같은 김정철 명조 */
 /* 굵기 300·400·700 세 종류만 제공되어 500은 400, 600은 700으로 표시 */
 @font-face { font-family: "KimjungchulMyungjo"; src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Light.woff2") format("woff2"); font-weight: 300; font-display: swap; }
@@ -40,7 +44,8 @@ html:lang(ko) { --sans: .93; }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 /* 스크롤바 자리를 항상 두어 페이지마다 가로 폭을 같게 하고, 휴대폰에서 누를 때 회색 사각형이 깜빡이지 않게 함 */
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; overflow-y: scroll; -webkit-tap-highlight-color: transparent; }
+/* 굵은 글꼴 파일이 없는 글꼴을 브라우저가 굵게·기울임으로 흉내 내지 않도록 끔(쓰는 글꼴은 모두 실제 굵은 글꼴 파일을 불러옴) */
+html { font-synthesis: none; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; overflow-y: scroll; -webkit-tap-highlight-color: transparent; }
 /* Chrome·Safari는 3px 스크롤바를 평소에는 숨기고, 스크롤하는 동안만 옅은 남색으로 표시 */
 ::-webkit-scrollbar { width: 3px; height: 3px; }
 /* 스크롤바는 상단 메뉴바(높이 76px와 아래 선 1px)에서 12px 아래로 띄워 시작하고 화면 아래 끝과도 12px 띄움 */
