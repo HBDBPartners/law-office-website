@@ -16,6 +16,14 @@ After editing anything in `_src/`, run the following and commit both the source 
 python3 _src/build.py
 ```
 
+To check without writing, run the following. It lists generated files that differ from the source (for example, a file edited by hand) and exits with an error if there are any.
+
+```bash
+python3 _src/build.py --check
+```
+
+The build also lists HTML files that have no source page, such as a page whose source was deleted.
+
 ## Local development
 
 From the repository folder, run the following and open `http://localhost:8000`.

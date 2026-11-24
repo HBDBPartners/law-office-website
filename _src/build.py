@@ -4,18 +4,25 @@ _src/pages의 페이지 본문과 _src/partials의 머리글·바닥글을 합�
 저장소 루트의 HTML은 조립 결과라서 직접 고치지 않고, 원본을 고친 뒤 다시 조립함.
 
 실행: python3 _src/build.py
+확인만: python3 _src/build.py --check  (조립 결과와 현재 HTML이 다르면 파일 이름을 알리고 실패로 끝남)
 """
 
 import hashlib
 import pathlib
+import re
 import string
+import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "_src"
 SITE = "https://hbdbpartners.com"
 
 # 캐시 버전에 반영하는 파일: 이 파일들의 내용이 바뀌면 ?v 값이 바뀌어 브라우저가 새 파일을 받음
-VERSIONED = ["style.css", "menu.js", "scrollbar.js", "hero.js", "contact-map.js", "logo-ko.svg", "logo-en.svg"]
+# CSS가 불러오는 그림(icon.svg, arrow-external.svg)도 포함함
+VERSIONED = [
+    "style.css", "menu.js", "scrollbar.js", "hero.js", "contact-map.js",
+    "logo-ko.svg", "logo-en.svg", "icon.svg", "arrow-external.svg",
+]
 
 # 명조(Noto Serif KR)만 불러오는 글꼴 연결: 영문 페이지와 머리글·바닥글 없는 404에 씀
 FONTS_SERIF_ONLY = "family=Noto+Serif+KR:wght@500;600"
@@ -43,6 +50,11 @@ HERO_SCRIPTS = (
     'if(m&&!m.classList.contains("ready"))document.documentElement.classList.remove("js")},3000)</script>\n'
     '<script src="/assets/hero.js?v=$v" defer></script>\n'
 )
+
+
+def with_version(text, v):
+    """글 안의 $v만 캐시 버전으로 바꿈. 스크립트의 ${...} 같은 다른 $ 표기는 그대로 둠."""
+    return re.sub(r"\$v(?!\w)", v, text)
 
 
 def version():
@@ -134,7 +146,7 @@ def head(meta, parts, v, source):
         out.append(f'<script src="/assets/menu.js?v={v}" defer></script>\n')
         out.append(f'<script src="/assets/scrollbar.js?v={v}" defer></script>\n')
     if meta.get("hero") == "yes":
-        out.append(string.Template(HERO_SCRIPTS).substitute(v=v))
+        out.append(with_version(HERO_SCRIPTS, v))
     out.append(parts.get("head", ""))
     out.append("</head>\n")
     return "".join(out)
@@ -154,27 +166,55 @@ def build_page(src, v):
     out = [head(meta, parts, v, source), "<body>\n\n"]
     if not bare:
         current = {f"cur_{n}": (' aria-current="page"' if meta.get("nav") == n else "") for n in ("practice", "people", "contact")}
-        out.append(partial(f"header-{lang}.html", v=v, other=meta.get("other", meta.get("alt")), **current))
+        # 언어 짝이 없는 페이지의 언어 전환 버튼은 상대 언어 첫 화면으로 연결
+        other = meta.get("other") or meta.get("alt") or ("/en/" if lang == "ko" else "/")
+        out.append(partial(f"header-{lang}.html", v=v, other=other, **current))
         out.append("\n")
     out += [main_open, "\n", parts["main"], "</main>\n\n"]
     if not bare:
         out.append(partial(f"footer-{lang}.html"))
         out.append("\n")
     if "after" in parts:
-        out.append(string.Template(parts["after"]).substitute(v=v))
+        out.append(with_version(parts["after"], v))
     out.append("</body>\n</html>\n")
     return "".join(out)
 
 
+def stray_html(outputs):
+    """원본이 없는 HTML: 원본 페이지를 지운 뒤 남은 예전 조립 결과일 수 있음."""
+    found = set()
+    for path in ROOT.rglob("*.html"):
+        rel = path.relative_to(ROOT)
+        if rel.parts[0] not in ("_src", ".git", ".claude"):
+            found.add(rel)
+    return sorted(found - outputs)
+
+
 def main():
+    check = "--check" in sys.argv[1:]
     v = version()
     pages = sorted((SRC / "pages").rglob("*.html"))
+    outputs = set()
+    changed = []
     for src in pages:
         rel = src.relative_to(SRC / "pages")
+        outputs.add(rel)
         dest = ROOT / rel
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_text(build_page(src, v), encoding="utf-8")
-    print(f"{len(pages)}개 페이지 조립, 캐시 버전 {v}")
+        html = build_page(src, v)
+        if dest.exists() and dest.read_text(encoding="utf-8") == html:
+            continue
+        changed.append(rel)
+        if not check:
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_text(html, encoding="utf-8")
+    for rel in stray_html(outputs):
+        print(f"원본 없는 HTML: {rel} (원본을 지웠다면 이 파일도 지울 것)")
+    if check:
+        for rel in changed:
+            print(f"조립 결과와 다름: {rel}")
+        print(f"확인 {len(pages)}개 페이지, 다른 파일 {len(changed)}개")
+        sys.exit(1 if changed else 0)
+    print(f"{len(pages)}개 페이지 조립, 바뀐 파일 {len(changed)}개, 캐시 버전 {v}")
 
 
 if __name__ == "__main__":
