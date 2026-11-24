@@ -118,14 +118,26 @@
     ln2.insertBefore(db, p2);
     db.classList.add('pre');
     text.style.height = endH + 'px';
+
+    // PC(861px 이상)에서는 「해법」 「동반」을 세로로 놓은 덩어리의 가운데를 사진 세로 가운데에 맞춤
+    // 「해법」은 마지막 화면까지 움직이지 않으므로 마지막 화면도 같은 거리만큼 함께 옮겨짐
+    // 모바일은 문구를 사진 아래쪽에 두는 배치를 그대로 씀
+    if (window.matchMedia('(min-width: 861px)').matches) {
+      var photo = document.querySelector('.hero-photo').getBoundingClientRect();
+      var top = motto.querySelector('.hb').getBoundingClientRect().top;
+      var bottom = db.getBoundingClientRect().bottom;
+      var shift = (photo.top + photo.height / 2) - (top + bottom) / 2;
+      text.style.transform = 'translateY(' + shift.toFixed(1) + 'px)';
+    }
     motto.classList.add('ready');
 
-    // 화면 너비가 바뀌면 고정한 높이를 풀어 다시 맞춤
+    // 화면 너비가 바뀌면 고정한 높이와 옮긴 거리를 풀어 다시 맞춤
     // 모바일 주소창이 접히며 높이만 바뀌는 경우는 제외함
     var width = window.innerWidth;
     function release() {
       if (window.innerWidth === width) return;
       text.style.height = '';
+      text.style.transform = '';
       window.removeEventListener('resize', release);
     }
     window.addEventListener('resize', release);
@@ -180,8 +192,9 @@
         return;
       }
 
-      // 4단계: 「동반」이 거의 다 올라갔을 때부터 「법률사무소」와 소개 문단이 함께 나타남
-      later(800, function () {
+      // 4단계: 「동반」이 이동 거리의 60%쯤 왔을 때부터 「법률사무소」와 소개 문단이 함께 나타남
+      // 영문 페이지에서 네 글자가 모이는 시간의 약 60%(0.6초 중 0.35초)에 「Partners」가 나타나는 비율과 같음
+      later(600, function () {
         office.classList.add('in');
         lead.classList.add('in');
       });
