@@ -1,5 +1,6 @@
 // 첫 화면 사무소명 동작
 // 「해법」 「동반」 두 줄에 문구가 한 글자씩 나타났다가 사라진 뒤, 「동반」이 「해법」 옆으로 올라가고 「법률사무소」와 소개 문단이 나타남
+// 영문 페이지는 마지막에 「해법동반」이 한 글자씩 「HBDB」로 바뀐 뒤 「Partners」와 소개 문단이 나타남
 (function () {
   var text = document.querySelector('.hero-text');
   var motto = document.querySelector('.motto');
@@ -23,21 +24,11 @@
   var p1 = motto.querySelector('.p1');
   var p2 = motto.querySelector('.p2');
 
-  // 글자마다 감싸서 한 글자씩 켤 수 있게 함
+  // 문구 안의 각 부분을 글자마다 감싸서 한 글자씩 켤 수 있게 함
   function split(el) {
-    var out = [];
-    [].slice.call(el.children).forEach(function (part) {
-      var t = part.textContent;
-      part.textContent = '';
-      for (var i = 0; i < t.length; i++) {
-        var c = document.createElement('span');
-        c.className = 'c';
-        c.textContent = t[i];
-        part.appendChild(c);
-        out.push(c);
-      }
-    });
-    return out;
+    return [].slice.call(el.children).reduce(function (out, part) {
+      return out.concat(wrap(part, 'c'));
+    }, []);
   }
 
   // 한 글자씩 나타냄
