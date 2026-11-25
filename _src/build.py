@@ -282,10 +282,11 @@ def sitemap(entries):
     return "".join(lines), old
 
 
-def main():
-    check = "--check" in sys.argv[1:]
-    v = version()
-    pages = sorted((SRC / "pages").rglob("*.html"))
+def build_pages(pages, v, check):
+    """원본 페이지를 조립해 기존 결과와 비교하고, 확인 모드가 아니면 달라진 파일만 씀.
+
+    돌려주는 값: 결과 파일 경로 모음, 달라진 파일 목록, sitemap 항목(주소, 달라짐 여부)
+    """
     outputs = set()
     changed = []
     entries = []
@@ -304,6 +305,14 @@ def main():
         if not check:
             dest.parent.mkdir(parents=True, exist_ok=True)
             dest.write_text(page, encoding="utf-8")
+    return outputs, changed, entries
+
+
+def main():
+    check = "--check" in sys.argv[1:]
+    v = version()
+    pages = sorted((SRC / "pages").rglob("*.html"))
+    outputs, changed, entries = build_pages(pages, v, check)
     xml, old_xml = sitemap(entries)
     if xml != old_xml:
         changed.append(pathlib.Path("sitemap.xml"))
