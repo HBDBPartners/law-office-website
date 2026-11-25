@@ -216,6 +216,8 @@ html:lang(en) .motto.anim .mark.in { opacity: 1; }
 html:lang(en) .motto .w .s, html:lang(en) .motto .mark .l { display: inline-block; transition: opacity .45s, filter .45s; }
 html:lang(en) .motto .w .s.off, html:lang(en) .motto.anim .mark .l { opacity: 0; filter: blur(4px); }
 html:lang(en) .motto.anim .mark .l.on { opacity: 1; filter: none; }
+/* Safari는 높이 0인 상자의 흐림·투명도 전환 중 글자를 그리지 않으므로 줄 높이로 상자 높이를 확보하고 음수 여백으로 줄 배치를 유지함 */
+html:lang(en) .motto .mark .l { line-height: 1.35; margin-block: -.675em; }
 html:lang(en) .motto.anim .mark .pt { display: inline-block; opacity: 0; transition: opacity .6s ease-in-out; }
 html:lang(en) .motto.anim .mark .pt.in { opacity: 1; }
 /* 영문은 같은 크기에서 한글 뜻풀이보다 작아 보이므로 1.15배로 키움 */
