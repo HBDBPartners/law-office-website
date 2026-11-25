@@ -19,8 +19,8 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "_src"
 SITE = "https://hbdbpartners.com"
 
-# 캐시 버전에 반영하는 파일: HTML이 ?v를 붙여 부르는 파일이며, 내용이 바뀌면 ?v 값이 바뀌어 브라우저가 새 파일을 받음
-# CSS가 부르는 그림(icon.svg, arrow-external.svg)과 사진에는 ?v가 붙지 않으므로, 바꿀 때는 파일 이름을 바꿈
+# 캐시 버전에 반영하는 파일: HTML이 ?v를 붙여 부르는 파일이며, 내용이 변경되면 ?v 값도 변경되어 브라우저가 새 파일을 받음
+# CSS가 부르는 그림(icon.svg, arrow-external.svg)과 사진에는 ?v가 붙지 않으므로, 교체할 때는 파일 이름을 변경함
 VERSIONED = ["style.css", "menu.js", "scrollbar.js", "hero.js", "contact-map.js", "logo-ko.svg", "logo-en.svg"]
 
 # 페이지 설정에 쓸 수 있는 이름과 구역 이름: 오타를 오류로 알리기 위한 목록
@@ -92,7 +92,7 @@ def read_page(path):
         elif line.strip():
             fail(path, "첫 구역 표시(<!-- @main --> 등) 앞에 내용이 있음")
     check_page(path, meta, parts)
-    # 제목·설명은 원본에 글자 그대로 쓰고, HTML 속성에 넣을 수 있게 여기서 바꿈(& → &amp;, " → &quot;)
+    # 제목·설명은 원본에 글자 그대로 쓰고, HTML 속성에 넣을 수 있게 여기서 변환함(& → &amp;, " → &quot;)
     for key in ("title", "description"):
         if key in meta:
             meta[key] = html.escape(meta[key], quote=True)

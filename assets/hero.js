@@ -67,7 +67,7 @@
     mark.appendChild(pt);
     mark.classList.add('in');
 
-    // 각 로마자를 대응하는 한글 글자의 가운데에 둠
+    // 각 로마자를 대응하는 한글 글자의 가운데에 배치함
     var shifts = letters.map(function (l, i) {
       var a = syl[i].getBoundingClientRect();
       var b = l.getBoundingClientRect();
@@ -103,7 +103,7 @@
   var fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
   fontsReady.then(start);
 
-  // 시작 화면 배치로 바꾸고, 동작 중 문구 영역의 높이와 세로 위치를 고정함
+  // 시작 화면 배치로 전환하고, 동작 중 문구 영역의 높이와 세로 위치를 고정함
   function fixLayout() {
     // 문구 영역 높이를 마지막 화면 높이로 고정해, 마지막 화면이 세로 가운데에 오고 「해법」 위치가 흔들리지 않게 함
     // 시작 화면이 더 높으면 아래로 넘치지만, 넘치는 부분은 아직 보이지 않는 소개 문단 자리임
@@ -126,8 +126,8 @@
     }
     motto.classList.add('ready');
 
-    // 화면 너비가 바뀌면 고정한 높이와 옮긴 거리를 풀어 다시 맞춤
-    // 모바일 주소창이 접히며 높이만 바뀌는 경우는 제외함
+    // 화면 너비가 변경되면 고정한 높이와 옮긴 거리를 풀어 다시 맞춤
+    // 모바일 주소창이 접히며 높이만 변경되는 경우는 제외함
     var width = window.innerWidth;
     function release() {
       if (window.innerWidth === width) return;
@@ -167,7 +167,7 @@
     // 3단계: 「동반」이 곡선을 그리며 「해법」 옆으로 올라감
     // 오른쪽으로 먼저 간 뒤 위로 휘는 곡선이라 「해법」 위를 지나가지 않음
     function moveUp() {
-      // 문구를 숨기면 같은 줄의 기준선이 바뀌어 「동반」이 먼저 움찔하므로, 숨기기 전 위치를 출발점으로 잼
+      // 문구를 숨기면 같은 줄의 기준선이 이동해 「동반」이 먼저 움찔하므로, 숨기기 전 위치를 출발점으로 잼
       var a = db.getBoundingClientRect();
       p1.style.display = 'none';
       p2.style.display = 'none';
@@ -189,7 +189,7 @@
       }
       db.animate(frames, { duration: 1000, easing: 'cubic-bezier(.45,.05,.35,1)' });
 
-      // 영문 페이지는 「동반」이 다 올라간 뒤 「HBDB Partners」로 바뀜
+      // 영문 페이지는 「동반」이 다 올라간 뒤 「HBDB Partners」로 전환됨
       var mark = motto.querySelector('.mark');
       if (mark) {
         later(1100, function () { toMark(motto.querySelector('.hb'), db, mark); });
