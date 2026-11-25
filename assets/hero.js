@@ -99,9 +99,16 @@
     });
   }
 
-  // 웹 글꼴을 받은 뒤 시작해 높이를 정확히 잼
-  var fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
-  fontsReady.then(start);
+  // 첫 화면 문구에 쓰는 글꼴만 받은 뒤 시작해 높이를 정확히 잼
+  // 로고 글꼴은 한글·영문 모두, 마루부리는 한글 페이지에서만 기다림
+  // 본문용 글꼴은 기다리지 않으며, 글꼴을 받지 못해도 대체 글꼴로 시작함
+  var waits = [];
+  if (document.fonts && document.fonts.load) {
+    waits.push(document.fonts.load('300 40px KimjungchulMyungjo', '해법동반'));
+    if (document.documentElement.lang === 'ko') waits.push(document.fonts.load('16px MaruBuri', '해법'));
+  }
+  var fontsReady = Promise.all(waits);
+  fontsReady.then(start, start);
 
   // 시작 화면 배치로 전환하고, 동작 중 문구 영역의 높이와 세로 위치를 고정함
   function fixLayout() {

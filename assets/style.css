@@ -14,12 +14,12 @@
   --hover-bg: rgba(17, 30, 41, .03);
   /* 사진이 없는 칸과 지도를 불러오기 전 자리의 회색 */
   --placeholder: #e9e9e9;
-  --serif: "Latin Times", "Noto Serif KR", serif;
-  --body: "Latin Times", "Noto Sans KR", sans-serif;
+  --serif: "Latin Serif", "Noto Serif KR", serif;
+  --body: "Latin Serif", "Noto Sans KR", sans-serif;
   /* 로고 글자와 같은 글꼴로, 첫 화면 「해법동반」 「법률사무소」에 씀 */
   --logo: "KimjungchulMyungjo", "Noto Serif KR", serif;
   /* 머리글(메뉴, 언어 전환), 첫 화면 뜻풀이와 소개 문단에 쓰는 명조 계열 글꼴 */
-  --maru: "Latin Times", "MaruBuri", serif;
+  --maru: "Latin Serif", "MaruBuri", "Noto Serif KR", serif;
   --pad: clamp(72px, 10vw, 152px);
   /* 머리글·바닥글·홈 구역의 본문 폭과 좌우 여백: 첫 화면 문구도 이 왼쪽 선에 맞춤 */
   /* 전체 최대 폭은 본문 폭에 양쪽 여백을 더한 값이라 여백이 커져도 넓은 화면의 본문 폭은 그대로임 */
@@ -35,19 +35,22 @@ html:lang(ko) { --sans: .93; }
 /* PC는 사진 테두리 안쪽에서 첫 화면 문구가 사진 끝에 붙지 않도록 좌우 여백을 화면 폭의 10%로 지정함 */
 @media (min-width: 861px) { :root { --wrap-pad: clamp(64px, 10vw, 160px); } }
 
-/* 한글 페이지의 영문·숫자·기호만 영문 페이지와 같은 Times New Roman으로 표시하고 한글은 각 글꼴을 유지함 */
-/* Times 굵게는 한글 제목 옆에서 지나치게 진하므로 모든 굵기에 보통 굵기를 씀 */
-/* Times 대문자는 한글보다 낮아 보이므로 8% 키워 대문자 높이를 Noto 글꼴의 영문 대문자 높이에 맞춤 */
-/* Safari는 굵기 범위 선언을 무시하고, 글꼴 이름(Times New Roman)으로 찾으면 요청 굵기에 맞춰 굵은 파일을 고르므로 보통 굵기 파일 이름(PostScript 이름)만 지정해 굵기마다 따로 선언함 */
-@font-face { font-family: "Latin Times"; src: local("TimesNewRomanPSMT"); font-weight: 400; size-adjust: 108%; unicode-range: U+0020-007E, U+00A0-00FF, U+2013-2014, U+2018-201D; }
-@font-face { font-family: "Latin Times"; src: local("TimesNewRomanPSMT"); font-weight: 500; size-adjust: 108%; unicode-range: U+0020-007E, U+00A0-00FF, U+2013-2014, U+2018-201D; }
-@font-face { font-family: "Latin Times"; src: local("TimesNewRomanPSMT"); font-weight: 600; size-adjust: 108%; unicode-range: U+0020-007E, U+00A0-00FF, U+2013-2014, U+2018-201D; }
-@font-face { font-family: "Latin Times"; src: local("TimesNewRomanPSMT"); font-weight: 700; size-adjust: 108%; unicode-range: U+0020-007E, U+00A0-00FF, U+2013-2014, U+2018-201D; }
-/* 로고 글자와 같은 김정철 명조 */
-/* 굵기 300·400·700 세 종류만 제공되어 500은 400, 600은 700으로 표시 */
-@font-face { font-family: "KimjungchulMyungjo"; src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Light.woff2") format("woff2"); font-weight: 300; font-display: swap; }
-@font-face { font-family: "KimjungchulMyungjo"; src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
-@font-face { font-family: "KimjungchulMyungjo"; src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+/* 영문 글꼴 STIX Two Text: 모든 기기에서 같은 글꼴로 보이도록 저장소의 파일로 제공함(OFL, 영문 글자만 담은 28KB 파일, 굵기 400~700) */
+/* 영문 페이지용: 같은 크기에서 글자 폭이 약 5% 넓어 95.5%로 줄여 문단의 줄 수가 늘지 않게 함 */
+@font-face { font-family: "STIX Two Text"; src: url("fonts/STIXTwoText-latin.woff2") format("woff2"); font-weight: 400 700; font-display: swap; size-adjust: 95.5%; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+/* 한글 페이지용: 한글 사이의 영문·숫자·기호만 STIX Two Text로 표시하고 한글은 각 글꼴을 유지함 */
+/* 굵기를 400 하나로 선언해 굵은 글씨도 보통 굵기로 표시함, 굵은 영문은 한글 제목 옆에서 지나치게 진함 */
+/* 대문자가 한글보다 낮아 보이므로 108.5%로 키워 대문자 높이를 Noto 글꼴의 영문 대문자 높이에 맞춤 */
+@font-face { font-family: "Latin Serif"; src: url("fonts/STIXTwoText-latin.woff2") format("woff2"); font-weight: 400; font-display: swap; size-adjust: 108.5%; unicode-range: U+0020-007E, U+00A0-00FF, U+2013-2014, U+2018-201D; }
+/* 로고 글자와 같은 김정철 명조 Light */
+/* 첫 화면 문구(해법동반, 법률사무소, HBDB Partners)에만 쓰므로 해당 글자만 담은 파일을 저장소에 포함함 */
+/* 원본 파일 1.1MB를 받는 동안 첫 화면 동작 시작이 늦어지므로 사용 글자만 포함함 */
+/* 이 글꼴로 표시할 글자를 추가하면 파일을 다시 만들어야 함 */
+@font-face { font-family: "KimjungchulMyungjo"; src: url("fonts/KimjungchulMyungjo-Light-hero.woff2") format("woff2"); font-weight: 300; font-display: swap; }
+/* 마루부리 Regular: 메뉴, 언어 전환, 첫 화면 뜻풀이와 소개 문단에 씀 */
+/* 원본 424KB 대신 자주 쓰는 한글 2,350자(KS X 1001)와 기호만 담은 파일을 저장소에 포함해, 받는 동안 글자가 비어 보이지 않게 함 */
+/* 2,350자에 없는 글자는 Noto Serif KR로 표시함 */
+@font-face { font-family: "MaruBuri"; src: url("fonts/MaruBuri-Regular-ksx1001.woff2") format("woff2"); font-weight: 400; font-display: swap; }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 /* 스크롤바 자리를 항상 확보해 페이지마다 가로 폭을 같게 하고, 휴대폰에서 누를 때 회색 사각형이 깜빡이지 않게 함 */
@@ -112,12 +115,12 @@ ul { list-style: none; }
 .lang.move .on { color: var(--navy); }
 .lang.move a { color: #fff; }
 
-/* 영문 페이지: 제목·본문·메뉴는 Times New Roman, 본문 속 한글은 Noto Serif KR로 표시 */
+/* 영문 페이지: 제목·본문·메뉴는 STIX Two Text, 본문 속 한글은 Noto Serif KR로 표시 */
 /* 첫 화면 「해법동반」 「HBDB Partners」는 로고 글꼴(--logo)을 그대로 씀 */
-html:lang(en) { --serif: "Times New Roman", Times, "Noto Serif KR", serif; --body: "Times New Roman", Times, "Noto Serif KR", serif; --maru: "Times New Roman", Times, "Noto Serif KR", serif; }
+html:lang(en) { --serif: "STIX Two Text", "Noto Serif KR", serif; --body: "STIX Two Text", "Noto Serif KR", serif; --maru: "STIX Two Text", "Noto Serif KR", serif; }
 html:lang(en) body { word-break: normal; }
 /* 언어 전환 KO·EN 글자는 한글 페이지와 같은 글꼴 */
-html:lang(en) .lang { font-family: "Latin Times", "MaruBuri", serif; }
+html:lang(en) .lang { font-family: "Latin Serif", "MaruBuri", serif; }
 /* 영문은 EN이 오른쪽에 있으므로 남색 칸이 오른쪽에서 시작해 KO를 누르면 왼쪽으로 이동 */
 .lang-en .knob { transform: translateX(100%); }
 .lang-en.move .knob { transform: none; }
@@ -213,7 +216,7 @@ html:lang(en) .motto .w .s.off, html:lang(en) .motto.anim .mark .l { opacity: 0;
 html:lang(en) .motto.anim .mark .l.on { opacity: 1; filter: none; }
 html:lang(en) .motto.anim .mark .pt { display: inline-block; opacity: 0; transition: opacity .6s ease-in-out; }
 html:lang(en) .motto.anim .mark .pt.in { opacity: 1; }
-/* Times New Roman은 같은 크기에서 한글 뜻풀이보다 작아 보이므로 1.15배로 키움 */
+/* 영문은 같은 크기에서 한글 뜻풀이보다 작아 보이므로 1.15배로 키움 */
 html:lang(en) .motto .ph { font-size: clamp(18px, 1.8vw, 34px); line-height: 1.35; }
 @media (max-width: 620px) { html:lang(en) .motto .ph { font-size: 16px; } }
 
@@ -324,9 +327,8 @@ html:has(.home-sec) .foot { scroll-snap-align: end; }
 .contact-h { margin: clamp(44px, 5.5vw, 70px) 0 16px; font: 500 20px/1.4 var(--serif); }
 .contact-list { display: grid; grid-template-columns: 5em 1fr; gap: 6px 20px; align-items: baseline; font-size: calc(14px * var(--sans)); line-height: 1.5; color: var(--ink-soft); }
 .contact-list dt { font: 500 14px/1.4 var(--serif); color: var(--navy); }
-/* Times New Roman은 굵기가 보통과 굵게 둘뿐이라 500이 보통으로 표시되므로, 보통 굵기에 획을 0.15px 더해 중간 굵기로 표시함 */
-html:lang(en) .contact-list dt, html:lang(en) .contact-h, html:lang(en) .person dt, html:lang(en) .area h2, html:lang(en) .area .sub-t, html:lang(en) .field-name, html:lang(en) .member-name, html:lang(en) .profile-name { font-weight: 400; -webkit-text-stroke: .15px currentColor; }
-html:lang(en) .profile-name .role { -webkit-text-stroke: 0; }
+/* 영문 항목명과 제목은 굵게 대신 중간 굵기(500)로 표시해 한글 페이지의 같은 자리와 무게를 맞춤 */
+html:lang(en) .contact-list dt, html:lang(en) .contact-h, html:lang(en) .person dt, html:lang(en) .area h2, html:lang(en) .area .sub-t, html:lang(en) .field-name, html:lang(en) .member-name, html:lang(en) .profile-name { font-weight: 500; }
 .contact-list a { text-decoration: none; }
 /* 네이버 지도와 로고 위치 표시 */
 /* 지도 안의 확대·축소 버튼이 스크롤할 때 상단 메뉴바 위로 올라오지 않도록 지도를 따로 쌓음 */
@@ -343,7 +345,7 @@ html:lang(en) .profile-name .role { -webkit-text-stroke: 0; }
 /* 외부 링크 표시 ↗: 같은 그림 파일을 글자 색으로 칠해 붙임 */
 .map-links a::after { content: ""; display: inline-block; width: 9px; height: 9px; margin-left: 4px; vertical-align: 1px; background: currentColor; -webkit-mask: url("/assets/arrow-external.svg") center / contain no-repeat; mask: url("/assets/arrow-external.svg") center / contain no-repeat; }
 
-/* 한글 바닥글은 영문(Times New Roman 11px)과 글자 높이가 비슷해 보이도록 10px로 지정함 */
+/* 한글 바닥글은 영문(11px)과 글자 높이가 비슷해 보이도록 10px로 지정함 */
 .foot { border-top: 1px solid var(--line); padding: 24px 0 32px; font-size: 10px; color: rgba(17, 30, 41, .7); }
 html:lang(en) .foot { font-size: 11px; }
 .foot-in { display: flex; flex-wrap: wrap; gap: 2px 20px; }

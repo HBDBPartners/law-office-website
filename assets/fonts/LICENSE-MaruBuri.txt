@@ -1,0 +1,13 @@
+MaruBuri-Regular-ksx1001.woff2
+
+네이버 마루 부리 Regular에서 자주 쓰는 한글 2,350자(KS X 1001)와 기호만 담은 파일이다.
+원본 배포처: https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Regular.woff2
+라이선스 전문: https://help.naver.com/support/contents/contents.nhn?serviceNo=1074&categoryNo=3497
+
+이 페이지에는 네이버에서 제공한 나눔글꼴이 적용되어 있다.
+
+라이선스 원문 요지
+- 네이버 나눔글꼴의 지적 재산권은 네이버와 네이버문화재단에 있다.
+- 개인 및 기업 사용자를 포함한 모든 사용자에게 무료로 제공되며 자유롭게 수정하고 재배포할 수 있다.
+- 글꼴 자체를 유료로 판매하는 것은 금지된다.
+- 본 저작권 안내와 라이선스 전문을 포함해서 다른 소프트웨어와 번들하거나 재배포할 수 있다.

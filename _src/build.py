@@ -52,6 +52,12 @@ LANG = {
 }
 
 # 첫 화면 동작 전 화면을 가리는 표시를 붙이고, 3초 안에 동작이 시작되지 않으면 떼어 마지막 화면을 보임
+# 첫 화면 동작이 기다리는 글꼴은 CSS를 읽기 전에 미리 받기 시작함
+# 마루부리는 한글 첫 화면에만 쓰므로 한글 홈에서만 미리 받음
+HERO_PRELOAD = {
+    "ko": ["KimjungchulMyungjo-Light-hero.woff2", "MaruBuri-Regular-ksx1001.woff2"],
+    "en": ["KimjungchulMyungjo-Light-hero.woff2"],
+}
 HERO_SCRIPTS = (
     '<script>document.documentElement.classList.add("js");setTimeout(function(){var m=document.querySelector(".motto");'
     'if(m&&!m.classList.contains("ready"))document.documentElement.classList.remove("js")},3000)</script>\n'
@@ -177,13 +183,13 @@ def head(meta, parts, v, source):
         '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n',
         f'<link rel="stylesheet" href="https://fonts.googleapis.com/css2?{fonts}&display=swap">\n',
     ]
-    if not bare:
-        out.append('<link rel="stylesheet" href="https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css">\n')
     out.append(f'<link rel="stylesheet" href="/assets/style.css?v={v}">\n')
     if not bare:
         out.append(f'<script src="/assets/menu.js?v={v}" defer></script>\n')
         out.append(f'<script src="/assets/scrollbar.js?v={v}" defer></script>\n')
     if meta.get("hero") == "yes":
+        for font in HERO_PRELOAD[lang]:
+            out.append(f'<link rel="preload" href="/assets/fonts/{font}" as="font" type="font/woff2" crossorigin>\n')
         out.append(with_version(HERO_SCRIPTS, v))
     out.append(with_version(parts.get("head", ""), v))
     out.append("</head>\n")

@@ -1,0 +1,11 @@
+KimjungchulMyungjo-Light-hero.woff2
+
+김정철 명조 Light(Junglim Architecture, 2021)에서 이 사이트 첫 화면에 쓰는 글자만 담은 파일이다.
+원본: https://www.sandollcloud.com/free-font/17597/KimjungchulMyungjo
+배포처: https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Light.woff2
+
+라이선스 원문은 위 원본 페이지의 「라이선스 원문」을 따른다.
+- 개인과 기업을 포함한 모든 사용자에게 상업적 목적을 포함해 무료로 제공된다.
+- 저작권 안내와 라이선스 전문을 포함해 다른 소프트웨어와 번들하거나 재배포할 수 있다.
+- 서체 자체나 2차 가공한 서체를 유료로 판매하는 것은 금지된다.
+- 저작권자는 폰트 소프트웨어의 사용과 관련해 발생하는 손해에 책임을 지지 않는다.
