@@ -225,6 +225,27 @@ def build_page(src, v):
     return "".join(out), meta
 
 
+def check_fonts(pages):
+    """글꼴 파일 확인: 미리 받기 목록의 파일이 없으면 중단하고, 마루부리 서브셋에 없는 한글은 알림."""
+    css = (ROOT / "assets" / "style.css").read_text(encoding="utf-8")
+    for font in sorted({f for fonts in HERO_PRELOAD.values() for f in fonts}):
+        if not (ROOT / "assets" / "fonts" / font).exists() or font not in css:
+            sys.exit(f"미리 받기 글꼴 파일 {font}: assets/fonts에 없거나 style.css에서 쓰지 않음")
+    # 마루부리 파일은 KS X 1001 한글 2,350자만 담으므로 그 밖의 한글을 찾음
+    for src in pages + sorted((SRC / "partials").glob("*.html")):
+        rare = sorted({c for c in src.read_text(encoding="utf-8") if "가" <= c <= "힣" and not _in_ksx1001(c)})
+        if rare:
+            print(f"마루부리에 없는 한글: {''.join(rare)} ({src.relative_to(SRC)}), 해당 글자는 Noto Serif KR로 표시됨")
+
+
+def _in_ksx1001(char):
+    # 파이썬 EUC-KR 변환은 2,350자 밖의 한글을 8바이트 조합형으로 바꾸므로 2바이트인 경우만 2,350자로 봄
+    try:
+        return len(char.encode("euc-kr")) == 2
+    except UnicodeEncodeError:
+        return False
+
+
 def stray_html(outputs):
     """원본이 없는 HTML: 원본 페이지를 지운 뒤 남은 예전 조립 결과일 수 있음."""
     found = set()
@@ -288,6 +309,7 @@ def main():
         changed.append(pathlib.Path("sitemap.xml"))
         if not check:
             (ROOT / "sitemap.xml").write_text(xml, encoding="utf-8")
+    check_fonts(pages)
     for rel in stray_html(outputs):
         print(f"원본 없는 HTML: {rel} (원본을 지웠다면 이 파일도 지울 것)")
     if check:
