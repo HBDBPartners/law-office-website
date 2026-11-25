@@ -90,24 +90,26 @@ ul { list-style: none; }
   border-bottom: 1px solid var(--line);
 }
 .top-in { display: flex; align-items: center; gap: 24px; height: var(--head-h); }
-.brand img { display: block; height: 32px; width: auto; }
-.nav { display: flex; gap: clamp(16px, 2.6vw, 32px); margin-left: auto; font-family: var(--maru); font-size: 14px; }
+/* PC 로고와 메뉴는 큰 화면에서 첫 화면 글자와 함께 커지도록 화면 폭에 비례하고, 로고:메뉴 크기 비율(약 2.4배)을 유지함 */
+.brand img { display: block; height: clamp(34px, 2.2vw, 44px); width: auto; }
+.nav { display: flex; gap: clamp(16px, 2.6vw, 32px); margin-left: auto; font-family: var(--maru); font-size: clamp(14px, .9vw, 17px); }
 .nav a { text-decoration: none; }
 .nav a:hover, .nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: 6px; text-decoration-color: var(--gold); }
 .lang {
   position: relative; display: inline-flex; padding: 2px; margin-left: 8px;
   border: 1px solid var(--line);
-  font-family: var(--maru); font-size: 12px; line-height: 1;
+  font-family: var(--maru); font-size: clamp(12px, .77vw, 14.5px); line-height: 1;
 }
 .lang > span:not(.knob), .lang > a {
   position: relative; z-index: 1;
-  width: 34px; padding: 6px 0; text-align: center;
+  width: 2.85em; padding: .5em 0; text-align: center;
   text-decoration: none; transition: color .22s;
 }
 .lang .on { color: #fff; }
 /* 현재 언어를 덮는 남색 칸으로, 다른 언어를 누르면 그쪽으로 이동함 */
+/* PC는 칸 폭과 여백을 글자 크기(em) 기준으로 지정해 메뉴와 같은 비율로 커지게 함 */
 .lang .knob {
-  position: absolute; top: 2px; bottom: 2px; left: 2px; width: 34px;
+  position: absolute; top: 2px; bottom: 2px; left: 2px; width: 2.85em;
   background: var(--navy);
   transition: transform .22s cubic-bezier(.22, .61, .36, 1);
 }
@@ -119,8 +121,8 @@ ul { list-style: none; }
 /* 첫 화면 「해법동반」 「HBDB Partners」는 로고 글꼴(--logo)을 그대로 씀 */
 html:lang(en) { --serif: "STIX Two Text", "Noto Serif KR", serif; --body: "STIX Two Text", "Noto Serif KR", serif; --maru: "STIX Two Text", "Noto Serif KR", serif; }
 html:lang(en) body { word-break: normal; }
-/* 언어 전환 KO·EN 글자는 한글 페이지와 같은 글꼴 */
-html:lang(en) .lang { font-family: "Latin Serif", "MaruBuri", serif; }
+/* 언어 전환 KO·EN 글자와 메뉴는 한글 페이지의 영문과 같은 글꼴·크기 보정을 써서 한글 메뉴와 같은 크기로 보이게 함 */
+html:lang(en) .lang, html:lang(en) .nav { font-family: "Latin Serif", "MaruBuri", serif; }
 /* 영문은 EN이 오른쪽에 있으므로 남색 칸이 오른쪽에서 시작해 KO를 누르면 왼쪽으로 이동 */
 .lang-en .knob { transform: translateX(100%); }
 .lang-en.move .knob { transform: none; }
@@ -377,7 +379,7 @@ html:lang(en) .foot { font-size: 11px; }
   .motto .ph { font-size: 14px; }
   .top-in { gap: 16px; }
   ::-webkit-scrollbar-track { margin-top: 77px; }
-  .brand img { height: 26px; }
+  .brand img { height: 29px; }
   /* 글자 대신 가는 선 세 줄을 그리고, 선을 상자 오른쪽 끝에 붙여 로고의 왼쪽 여백과 맞춤 */
   /* 상자 왼쪽 빈 공간만큼 당겨 언어 전환 버튼과의 간격을 16px로 맞춤 */
   .burger {
@@ -406,7 +408,7 @@ html:lang(en) .foot { font-size: 11px; }
   .nav.anim { transition: transform .28s cubic-bezier(.22, .61, .36, 1), box-shadow .28s; }
   .nav.open { transform: none; box-shadow: 0 14px 30px -18px rgba(17, 30, 41, .35); }
   /* 글자 시작 위치를 로고 왼쪽 끝과 맞춤 */
-  .nav a { padding: 7px 10px; font-size: 12.5px; }
+  .nav a { padding: 7px 10px; font-size: 14px; }
   .nav a:hover { text-decoration: none; background: rgba(17, 30, 41, .05); }
   .nav a[aria-current="page"] { text-decoration: none; color: #fff; background: var(--navy); }
   .lang { margin-left: auto; font-size: 10px; }
