@@ -161,7 +161,8 @@
           type(c2, 55, function () {
 
             // 2단계: 읽을 시간을 둔 뒤 두 문구가 함께 서서히 사라지고, 거의 사라질 무렵 「동반」이 움직이기 시작함
-            later(2600, function () {
+            // 둘째 문구는 쓰이는 동안부터 읽히므로 대기는 1.8초로 하고, 더 길면 멈춘 화면이 동작의 끝처럼 보임
+            later(1800, function () {
               p1.classList.add('out');
               p2.classList.add('out');
               later(280, moveUp);
