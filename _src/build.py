@@ -1,7 +1,7 @@
 """사이트 페이지 조립 스크립트.
 
 _src/pages의 페이지 본문과 _src/partials의 머리글·바닥글을 합쳐 저장소 루트에 HTML과 sitemap.xml을 만듦.
-저장소 루트의 HTML은 조립 결과라서 직접 고치지 않고, 원본을 고친 뒤 다시 조립함.
+저장소 루트의 HTML은 조립 결과라서 직접 수정하지 않고, 원본을 수정한 뒤 다시 조립함.
 
 실행: python3 _src/build.py
 확인만: python3 _src/build.py --check  (조립 결과와 현재 HTML이 다르면 파일 이름을 알리고 실패로 끝남)
@@ -20,7 +20,7 @@ SRC = ROOT / "_src"
 SITE = "https://hbdbpartners.com"
 
 # 캐시 버전에 반영하는 파일: HTML이 ?v를 붙여 부르는 파일이며, 내용이 변경되면 ?v 값도 변경되어 브라우저가 새 파일을 받음
-# CSS가 부르는 그림(icon.svg, arrow-external.svg)과 사진에는 ?v가 붙지 않으므로, 교체할 때는 파일 이름을 변경함
+# CSS가 부르는 그림(icon.svg, arrow-external.svg), 사진, assets/fonts의 글꼴 파일에는 ?v가 붙지 않으므로, 교체할 때는 파일 이름을 변경함
 VERSIONED = ["style.css", "menu.js", "scrollbar.js", "hero.js", "contact-map.js", "logo-ko.svg", "logo-en.svg"]
 
 # 페이지 설정에 쓸 수 있는 이름과 구역 이름: 오타를 오류로 알리기 위한 목록
@@ -66,7 +66,10 @@ HERO_SCRIPTS = (
 
 
 def with_version(text, v):
-    """글 안의 $v만 캐시 버전으로 바꿈. 스크립트의 ${...} 같은 다른 $ 표기는 그대로 둠."""
+    """글 안의 $v만 캐시 버전으로 치환함.
+
+    스크립트의 ${...} 같은 다른 $ 표기는 유지함.
+    """
     return re.sub(r"\$v(?!\w)", v, text)
 
 
@@ -239,7 +242,7 @@ def check_fonts(pages):
 
 
 def _in_ksx1001(char):
-    # 파이썬 EUC-KR 변환은 2,350자 밖의 한글을 8바이트 조합형으로 바꾸므로 2바이트인 경우만 2,350자로 봄
+    # 파이썬 EUC-KR 변환은 2,350자 밖의 한글을 8바이트 조합형으로 변환하므로 2바이트인 경우만 2,350자로 판정함
     try:
         return len(char.encode("euc-kr")) == 2
     except UnicodeEncodeError:
@@ -268,7 +271,10 @@ def sitemap_order(path):
 
 
 def sitemap(entries):
-    """검색엔진에 알릴 주소 목록. 마지막 수정일은 이번에 조립 결과가 바뀐 페이지만 오늘 날짜로 바꾸고 나머지는 이전 값을 유지함."""
+    """검색엔진에 알릴 주소 목록.
+
+    마지막 수정일은 이번에 조립 결과가 달라진 페이지만 오늘 날짜로 변경하고 나머지는 이전 값을 유지함.
+    """
     dest = ROOT / "sitemap.xml"
     old = dest.read_text(encoding="utf-8") if dest.exists() else ""
     previous = dict(re.findall(r"<loc>([^<]+)</loc><lastmod>([^<]+)</lastmod>", old))
@@ -326,7 +332,7 @@ def main():
             print(f"조립 결과와 다름: {rel}")
         print(f"확인 {len(pages)}개 페이지, 다른 파일 {len(changed)}개")
         sys.exit(1 if changed else 0)
-    print(f"{len(pages)}개 페이지 조립, 바뀐 파일 {len(changed)}개, 캐시 버전 {v}")
+    print(f"{len(pages)}개 페이지 조립, 변경된 파일 {len(changed)}개, 캐시 버전 {v}")
 
 
 if __name__ == "__main__":
