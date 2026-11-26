@@ -254,7 +254,8 @@ def stray_html(outputs):
     found = set()
     for path in ROOT.rglob("*.html"):
         rel = path.relative_to(ROOT)
-        if rel.parts[0] not in ("_src", ".git", ".claude"):
+        # 밑줄·마침표로 시작하는 최상위 폴더는 GitHub Pages가 공개하지 않으므로 검사에서 제외함
+        if not rel.parts[0].startswith(("_", ".")):
             found.add(rel)
     return sorted(found - outputs)
 
